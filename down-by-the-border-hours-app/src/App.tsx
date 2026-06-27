@@ -1,16 +1,75 @@
+import { Navigate, Route, Routes } from 'react-router-dom'
+import AdminRoute from '@/components/layout/AdminRoute'
+import AppLayout from '@/components/layout/AppLayout'
+import GuestRoute from '@/components/layout/GuestRoute'
+import ProtectedRoute from '@/components/layout/ProtectedRoute'
+import VolunteerRoute from '@/components/layout/VolunteerRoute'
+import Spinner from '@/components/ui/Spinner'
+import { useAuth } from '@/hooks/useAuth'
+import { useProfile } from '@/hooks/useProfile'
+import { getHomePath, isProfileComplete } from '@/lib/utils/profile'
+import AdminDashboardPage from '@/pages/admin/DashboardPage'
+import LoginPage from '@/pages/auth/LoginPage'
+import ProfileSetupPage from '@/pages/auth/ProfileSetupPage'
+import SignupPage from '@/pages/auth/SignupPage'
+import VolunteerDashboardPage from '@/pages/volunteer/DashboardPage'
+
+function HomeRedirect() {
+  const { session, isLoading: isAuthLoading } = useAuth()
+  const { profile, isLoading: isProfileLoading } = useProfile()
+
+  if (isAuthLoading || (session && isProfileLoading)) {
+    return <Spinner label="Loading" />
+  }
+
+  if (session) {
+    if (!isProfileComplete(profile)) {
+      return <Navigate to="/profile/setup" replace />
+    }
+
+    return <Navigate to={getHomePath(profile)} replace />
+  }
+
+  return <Navigate to="/login" replace />
+}
+
 function App() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4">
-      <main className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Down By The Border
-        </h1>
-        <p className="mt-2 text-slate-600">Volunteer Hours Tracker</p>
-        <p className="mt-6 text-sm text-slate-500">
-          Phase 1 setup complete. Auth flows coming in Phase 2.
-        </p>
-      </main>
-    </div>
+    <Routes>
+      <Route path="/" element={<HomeRedirect />} />
+      <Route
+        path="/login"
+        element={
+          <GuestRoute>
+            <LoginPage />
+          </GuestRoute>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <GuestRoute>
+            <SignupPage />
+          </GuestRoute>
+        }
+      />
+
+      <Route element={<ProtectedRoute />}>
+        <Route path="/profile/setup" element={<ProfileSetupPage />} />
+
+        <Route element={<AppLayout />}>
+          <Route element={<VolunteerRoute />}>
+            <Route path="/dashboard" element={<VolunteerDashboardPage />} />
+          </Route>
+
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminDashboardPage />} />
+          </Route>
+        </Route>
+      </Route>
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 

@@ -19,20 +19,20 @@ A staged checklist for building the MVP. Work top-to-bottom. Each phase should p
 - [x] Create `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
 - [x] Generate types: `npx supabase gen types typescript --project-id YOUR_ID > src/types/database.ts` *(hand-written from schema; re-run CLI after `supabase login` to refresh)*
 - [x] Create `src/lib/supabase.ts`
-- [ ] Push to GitHub
-- [ ] Connect to Vercel, verify deploy works
+- [X] Push to GitHub
+- [X] Connect to Vercel, verify deploy works
 
 ## Phase 2 — Auth (~2 hrs)
 
-- [ ] `useAuth` hook (session, loading, signIn, signUp, signOut)
-- [ ] `useProfile` hook (current user's profile row)
-- [ ] `useIsAdmin` hook
-- [ ] `<ProtectedRoute>` component (redirects to login if not authed)
-- [ ] `<AdminRoute>` component (redirects to dashboard if not admin)
-- [ ] Login page
-- [ ] Signup page (email, password, first name, last name)
-- [ ] Profile setup page (shown if profile missing required fields — phone, school, parent info)
-- [ ] Logout button in header
+- [x] `useAuth` hook (session, loading, signIn, signUp, signOut)
+- [x] `useProfile` hook (current user's profile row)
+- [x] `useIsAdmin` hook
+- [x] `<ProtectedRoute>` component (redirects to login if not authed)
+- [x] `<AdminRoute>` component (redirects to dashboard if not admin)
+- [x] Login page
+- [x] Signup page (email, password, first name, last name)
+- [x] Profile setup page (shown if profile missing required fields — phone, school, parent info)
+- [x] Logout button in header
 
 ## Phase 3 — Volunteer flows (~3 hrs)
 
