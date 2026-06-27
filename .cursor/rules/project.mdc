@@ -1,0 +1,61 @@
+---
+description: Always-on project rules for the Down By The Border volunteer hours tracker
+alwaysApply: true
+---
+
+# Project rules
+
+You are working on the **Down By The Border volunteer hours tracker**. Always read `PROJECT_CONTEXT.md` first for full product context.
+
+Do not make a any commits for me. I am in charge of those.
+
+## Stack (do not substitute)
+
+- React 18 + Vite + TypeScript (strict mode)
+- Tailwind CSS (no other CSS files)
+- Supabase (auth + Postgres + RLS)
+- React Router v6
+- React Hook Form + Zod for forms
+- `@react-pdf/renderer` for PDFs
+
+## Hard rules
+
+1. **TypeScript strict mode, always.** No `any` unless explicitly justified. Use types from `src/types/database.ts` for all DB rows.
+2. **All Supabase calls live in `src/lib/api/`** as typed async functions. Never call `supabase.from(...)` inside a component.
+3. **RLS is the source of truth for authorization.** Do not re-check roles in code beyond UI gating. If a query fails, surface it as an error.
+4. **Forms use React Hook Form + Zod.** No uncontrolled inputs scattered across pages.
+5. **Every async UI state needs loading + error + empty handling.** Never assume the happy path.
+6. **Tailwind for styling.** No inline styles, no separate `.css` files (except `index.css` for Tailwind directives).
+7. **Mobile-first.** Test layouts at 375px wide before desktop.
+8. **No `console.log` in committed code.** Use a `logger` util if needed.
+9. **Never hardcode the Supabase URL or anon key.** Always read from `import.meta.env.VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+10. **Date/time handling**: store everything as UTC timestamps in DB, format for display with the user's local timezone. Use `Intl.DateTimeFormat` — no Moment.js, no date-fns unless absolutely needed.
+
+## Naming conventions
+
+- Components: `PascalCase.tsx`
+- Hooks: `useCamelCase.ts`
+- API modules: `camelCase.ts` (e.g. `hourLogs.ts`)
+- Types: `PascalCase`
+- DB columns: `snake_case` (matches Supabase); convert to `camelCase` only at the boundary if you want — but consistency matters more than the choice
+
+## When generating components
+
+- Functional components only
+- Props typed via interface, not type alias (consistency)
+- Destructure props in the signature
+- Export default at the bottom
+- Keep components under ~150 lines; split if larger
+
+## When generating API functions
+
+- Each function returns either the data or throws — do not return `{ data, error }` tuples to callers
+- Use `.throwOnError()` or check `error` and throw a typed error
+- Name pattern: `getX`, `listX`, `createX`, `updateX`, `deleteX`
+
+## When uncertain
+
+- Read `PROJECT_CONTEXT.md` again
+- Ask the user before introducing a new dependency
+- Ask the user before changing data model or product behavior
+- Prefer the simplest solution that works — this is an MVP

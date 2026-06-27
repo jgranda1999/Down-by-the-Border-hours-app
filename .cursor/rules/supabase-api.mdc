@@ -1,0 +1,77 @@
+---
+description: Rules for Supabase API code — auto-attaches when working in src/lib/api/**
+globs: src/lib/api/**/*.ts
+---
+
+# Supabase API conventions
+
+## Client usage
+
+```ts
+import { supabase } from '@/lib/supabase';
+import type { Database } from '@/types/database';
+
+type Profile = Database['public']['Tables']['profiles']['Row'];
+type ProfileInsert = Database['public']['Tables']['profiles']['Insert'];
+type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
+```
+
+## Function shape
+
+```ts
+export async function getProfile(userId: string): Promise<Profile> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+```
+
+- Always destructure `{ data, error }`
+- Throw on error — let React Query / try-catch handle it
+- Use `.single()` when expecting exactly one row
+- Use `.maybeSingle()` when zero or one is valid
+
+## Common patterns
+
+### List with filters
+```ts
+export async function listHourLogs(opts: {
+  volunteerId?: string;
+  school?: string;
+  from?: string; // YYYY-MM-DD
+  to?: string;
+}): Promise<HourLog[]> {
+  let q = supabase.from('hour_logs').select('*, volunteer:profiles(*)');
+  if (opts.volunteerId) q = q.eq('volunteer_id', opts.volunteerId);
+  if (opts.from) q = q.gte('event_date', opts.from);
+  if (opts.to) q = q.lte('event_date', opts.to);
+  const { data, error } = await q.order('event_date', { ascending: false });
+  if (error) throw error;
+  return data;
+}
+```
+
+### Insert
+```ts
+export async function createHourLog(input: HourLogInsert): Promise<HourLog> {
+  const { data, error } = await supabase
+    .from('hour_logs')
+    .insert(input)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+```
+
+## Do NOT
+
+- Do not implement role checks in code (RLS does this)
+- Do not call `.from()` inside a React component
+- Do not catch errors silently — always rethrow or surface them
+- Do not use the service role key on the client — only the anon key

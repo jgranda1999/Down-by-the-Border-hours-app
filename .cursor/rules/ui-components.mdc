@@ -1,0 +1,98 @@
+---
+description: UI and component rules — auto-attaches when working in components or pages
+globs: src/components/**/*.tsx, src/pages/**/*.tsx
+---
+
+# UI / Component rules
+
+## Structure
+
+```tsx
+import { useState } from 'react';
+import type { Profile } from '@/types';
+
+interface VolunteerCardProps {
+  profile: Profile;
+  onSelect?: (id: string) => void;
+}
+
+function VolunteerCard({ profile, onSelect }: VolunteerCardProps) {
+  // hooks first
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // handlers
+  const handleClick = () => {
+    onSelect?.(profile.id);
+  };
+
+  // render
+  return (
+    <div className="rounded-lg border p-4 hover:bg-gray-50">
+      {/* ... */}
+    </div>
+  );
+}
+
+export default VolunteerCard;
+```
+
+## Tailwind
+
+- Mobile-first: write base classes for mobile, use `sm:`, `md:`, `lg:` for larger
+- Common spacing: `p-4`, `gap-4`, `space-y-4`
+- Use semantic colors via Tailwind: `text-gray-900` for body, `text-gray-600` for secondary, `text-red-600` for errors
+- Buttons: use a shared `<Button>` component, not raw `<button>` with classes everywhere
+- Cards: `rounded-lg border bg-white p-4 shadow-sm`
+
+## Async UI
+
+Every page/component that fetches data must handle four states:
+
+```tsx
+const { data, isLoading, error } = useQuery(...);
+
+if (isLoading) return <Spinner />;
+if (error) return <ErrorState error={error} />;
+if (!data || data.length === 0) return <EmptyState />;
+return <ActualContent data={data} />;
+```
+
+## Forms
+
+Use React Hook Form + Zod. Pattern:
+
+```tsx
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+const schema = z.object({
+  eventName: z.string().min(1, 'Event name is required'),
+  eventDate: z.string().min(1),
+  signInTime: z.string().min(1),
+  signOutTime: z.string().min(1),
+}).refine(
+  (d) => new Date(d.signOutTime) > new Date(d.signInTime),
+  { message: 'Sign-out must be after sign-in', path: ['signOutTime'] }
+);
+
+type FormData = z.infer<typeof schema>;
+
+function LogHoursForm() {
+  const { register, handleSubmit, formState: { errors, isSubmitting } } =
+    useForm<FormData>({ resolver: zodResolver(schema) });
+
+  const onSubmit = async (values: FormData) => {
+    // call api function
+  };
+
+  return <form onSubmit={handleSubmit(onSubmit)}>...</form>;
+}
+```
+
+## Accessibility
+
+- All inputs must have associated `<label>` elements
+- Buttons must have visible text or `aria-label`
+- Color is never the only indicator (icons + text for status)
+- Tap targets at least 44×44px on mobile
