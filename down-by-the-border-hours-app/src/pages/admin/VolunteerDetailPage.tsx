@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import ServiceHourLetterPanel from '@/components/admin/ServiceHourLetterPanel'
 import Button from '@/components/ui/Button'
 import ErrorState from '@/components/ui/ErrorState'
 import Spinner from '@/components/ui/Spinner'
@@ -91,13 +92,9 @@ function VolunteerDetailPage() {
             </dd>
           </div>
         </dl>
-
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Button disabled title="PDF letters arrive in Phase 5">
-            Generate letter (coming soon)
-          </Button>
-        </div>
       </section>
+
+      <ServiceHourLetterPanel volunteer={profile} logs={logs} />
 
       <section className="space-y-4">
         <div className="flex items-center justify-between gap-3">

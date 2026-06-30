@@ -7,6 +7,7 @@ import Input from '@/components/ui/Input'
 import Spinner from '@/components/ui/Spinner'
 import { deleteHourLog, listHourLogs } from '@/lib/api/hourLogs'
 import { formatProfileName, listProfiles } from '@/lib/api/profiles'
+import { downloadHourLogsCsv } from '@/lib/utils/csv'
 import { formatDate, formatTime } from '@/lib/utils/dates'
 import { formatHours } from '@/lib/utils/hours'
 import type { HourLogWithVolunteer, Profile } from '@/types'
@@ -135,8 +136,15 @@ function AllLogsPage() {
             onChange={(event) => setTo(event.target.value)}
           />
         </div>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-wrap gap-3">
           <Button onClick={handleApplyFilters}>Apply filters</Button>
+          <Button
+            variant="secondary"
+            disabled={isLoading || logs.length === 0}
+            onClick={() => downloadHourLogsCsv(logs)}
+          >
+            Export CSV
+          </Button>
         </div>
       </section>
 

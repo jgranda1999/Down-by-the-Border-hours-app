@@ -56,16 +56,15 @@ A staged checklist for building the MVP. Work top-to-bottom. Each phase should p
 
 ## Phase 5 — Reports (~2 hrs)
 
-- [ ] CSV export from All Logs (respects current filters)
-- [ ] PDF service-hour letter component (`@react-pdf/renderer`)
+- [X] CSV export from All Logs (respects current filters)
+- [X] PDF service-hour letter component (`@react-pdf/renderer`)
   - Header with nonprofit name + logo placeholder
   - "To Whom It May Concern"
   - Student name, school, date range
   - Table of approved hours
   - Total
   - Admin signature line
-- [ ] "Download Letter" from volunteer detail page
-- [ ] Bulk: from Reports page, pick school + date range → ZIP of PDFs (stretch goal — could skip for MVP)
+- [X] "Download Letter" from volunteer detail page
 
 ## Phase 6 — Polish (~2 hrs)
 
@@ -78,6 +77,12 @@ A staged checklist for building the MVP. Work top-to-bottom. Each phase should p
 - [ ] Favicon + page title
 
 ## Phase 7 — Ship
+
+- [ ] Figure out how to allow more supabase email verifications
+- [ ] Add Nonprofit logos and more customization to the design 
+- [ ] Figure out how to customize the vercel emmail auth 
+
+## Phase 8 — Ship
 
 - [ ] Production env vars in Vercel
 - [ ] Custom domain (optional)

@@ -33,6 +33,25 @@ export interface ListProfilesOptions {
   search?: string
 }
 
+function normalizeForSearch(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[._@+-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+export function profileMatchesSearch(profile: Profile, rawSearch: string): boolean {
+  const words = normalizeForSearch(rawSearch).split(' ').filter(Boolean)
+  if (words.length === 0) return true
+
+  const haystack = normalizeForSearch(
+    [profile.first_name, profile.last_name, profile.email].join(' '),
+  )
+
+  return words.every((word) => haystack.includes(word))
+}
+
 export async function listProfiles(
   opts: ListProfilesOptions = {},
 ): Promise<Profile[]> {
@@ -60,14 +79,9 @@ export async function listProfiles(
   }
 
   if (opts.search?.trim()) {
-    const searchNeedle = opts.search.trim().toLowerCase()
-    profiles = profiles.filter((profile) => {
-      const fullName = `${profile.first_name} ${profile.last_name}`.toLowerCase()
-      return (
-        fullName.includes(searchNeedle) ||
-        profile.email.toLowerCase().includes(searchNeedle)
-      )
-    })
+    profiles = profiles.filter((profile) =>
+      profileMatchesSearch(profile, opts.search!),
+    )
   }
 
   return profiles
