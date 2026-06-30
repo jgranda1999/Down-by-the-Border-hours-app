@@ -12,6 +12,11 @@ import { getProfile } from '@/lib/api/profiles'
 import { supabase } from '@/lib/supabase'
 import type { Profile } from '@/types'
 
+export interface SignUpResult {
+  needsEmailConfirmation: boolean
+  email: string
+}
+
 interface AuthContextValue {
   session: Session | null
   user: User | null
@@ -25,9 +30,10 @@ interface AuthContextValue {
     password: string,
     firstName: string,
     lastName: string,
-  ) => Promise<void>
+  ) => Promise<SignUpResult>
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
+  applyProfileUpdate: (profile: Profile) => void
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -69,6 +75,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     await loadProfile(user.id)
   }, [loadProfile, user])
+
+  const applyProfileUpdate = useCallback((nextProfile: Profile) => {
+    setProfile(nextProfile)
+    setProfileError(null)
+  }, [])
 
   useEffect(() => {
     let isMounted = true
@@ -126,7 +137,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const signUp = useCallback(
     async (email: string, password: string, firstName: string, lastName: string) => {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -138,6 +149,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       })
 
       if (error) throw error
+
+      return {
+        needsEmailConfirmation: !data.session,
+        email,
+      }
     },
     [],
   )
@@ -159,6 +175,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       signUp,
       signOut,
       refreshProfile,
+      applyProfileUpdate,
     }),
     [
       session,
@@ -171,6 +188,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       signUp,
       signOut,
       refreshProfile,
+      applyProfileUpdate,
     ],
   )
 

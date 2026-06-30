@@ -1,7 +1,7 @@
 import { useAuthContext } from '@/context/AuthProvider'
 
 export function useProfile() {
-  const { profile, isProfileLoading, profileError, refreshProfile } =
+  const { profile, isProfileLoading, profileError, refreshProfile, applyProfileUpdate } =
     useAuthContext()
 
   return {
@@ -9,5 +9,6 @@ export function useProfile() {
     isLoading: isProfileLoading,
     error: profileError,
     refreshProfile,
+    applyProfileUpdate,
   }
 }

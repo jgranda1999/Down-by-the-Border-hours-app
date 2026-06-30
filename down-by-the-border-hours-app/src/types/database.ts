@@ -64,6 +64,7 @@ export interface Database {
           email: string
           phone: string | null
           school: string | null
+          title: string | null
           parent_name: string | null
           parent_phone: string | null
           parent_email: string | null
@@ -78,6 +79,7 @@ export interface Database {
           email: string
           phone?: string | null
           school?: string | null
+          title?: string | null
           parent_name?: string | null
           parent_phone?: string | null
           parent_email?: string | null
@@ -92,6 +94,7 @@ export interface Database {
           email?: string
           phone?: string | null
           school?: string | null
+          title?: string | null
           parent_name?: string | null
           parent_phone?: string | null
           parent_email?: string | null

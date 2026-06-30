@@ -9,6 +9,9 @@ export function getErrorMessage(error: unknown, fallback: string): string {
     if (error.message.includes('Password should be at least')) {
       return 'Password must be at least 6 characters.'
     }
+    if (error.message.includes('title') && error.message.includes('column')) {
+      return 'Profile could not be saved. Ask your developer to run the database migration for admin titles.'
+    }
     return error.message
   }
 

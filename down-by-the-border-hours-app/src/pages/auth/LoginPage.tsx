@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -18,7 +18,6 @@ type LoginFormData = z.infer<typeof loginSchema>
 
 function LoginPage() {
   const navigate = useNavigate()
-  const location = useLocation()
   const { signIn } = useAuth()
   const [submitError, setSubmitError] = useState<string | null>(null)
 
@@ -35,9 +34,7 @@ function LoginPage() {
 
     try {
       await signIn(values.email, values.password)
-      const requestedPath =
-        (location.state as { from?: string } | null)?.from ?? '/'
-      navigate(requestedPath, { replace: true })
+      navigate('/', { replace: true })
     } catch (error) {
       setSubmitError(getErrorMessage(error, 'Could not sign you in. Try again.'))
     }

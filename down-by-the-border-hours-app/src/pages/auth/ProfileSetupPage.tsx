@@ -10,14 +10,16 @@ import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import { updateProfile } from '@/lib/api/profiles'
 import { getErrorMessage } from '@/lib/utils/errors'
-import { getHomePath, SUGGESTED_SCHOOLS } from '@/lib/utils/profile'
+import {
+  ADMIN_ROLE_LABEL,
+  getHomePath,
+  isAdminProfile,
+  SCHOOL_DATALIST_OPTIONS,
+} from '@/lib/utils/profile'
 
 const profileSetupSchema = z.object({
   phone: z.string().min(1, 'Phone number is required'),
   school: z.string().min(1, 'School is required'),
-  parentName: z.string().min(1, 'Parent or guardian name is required'),
-  parentPhone: z.string().min(1, 'Parent or guardian phone is required'),
-  parentEmail: z.string().min(1, 'Parent or guardian email is required').email('Enter a valid email'),
 })
 
 type ProfileSetupFormData = z.infer<typeof profileSetupSchema>
@@ -25,8 +27,9 @@ type ProfileSetupFormData = z.infer<typeof profileSetupSchema>
 function ProfileSetupPage() {
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { profile, refreshProfile } = useProfile()
+  const { profile, applyProfileUpdate } = useProfile()
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const isAdmin = isAdminProfile(profile)
 
   const {
     register,
@@ -38,9 +41,6 @@ function ProfileSetupPage() {
     defaultValues: {
       phone: '',
       school: '',
-      parentName: '',
-      parentPhone: '',
-      parentEmail: '',
     },
   })
 
@@ -50,9 +50,6 @@ function ProfileSetupPage() {
     reset({
       phone: profile.phone ?? '',
       school: profile.school ?? '',
-      parentName: profile.parent_name ?? '',
-      parentPhone: profile.parent_phone ?? '',
-      parentEmail: profile.parent_email ?? '',
     })
   }, [profile, reset])
 
@@ -65,11 +62,8 @@ function ProfileSetupPage() {
       const updated = await updateProfile(user.id, {
         phone: values.phone,
         school: values.school,
-        parent_name: values.parentName,
-        parent_phone: values.parentPhone,
-        parent_email: values.parentEmail,
       })
-      await refreshProfile()
+      applyProfileUpdate(updated)
       navigate(getHomePath(updated), { replace: true })
     } catch (error) {
       setSubmitError(
@@ -81,7 +75,7 @@ function ProfileSetupPage() {
   return (
     <AuthLayout
       title="Complete your profile"
-      subtitle="We only ask for this once so you don't have to re-enter it every time you log hours."
+      subtitle="Just a couple details so we know how to reach you. Parent info can be added later from your profile."
     >
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <Input
@@ -104,35 +98,26 @@ function ProfileSetupPage() {
             {...register('school')}
           />
           <datalist id="school-suggestions">
-            {SUGGESTED_SCHOOLS.map((school) => (
+            {SCHOOL_DATALIST_OPTIONS.map((school) => (
               <option key={school} value={school} />
             ))}
           </datalist>
+          <p className="text-xs text-slate-500">
+            Staff and admins can choose &ldquo;Not applicable&rdquo;.
+          </p>
           {errors.school ? (
             <p className="text-sm text-red-600">{errors.school.message}</p>
           ) : null}
         </div>
 
-        <Input
-          label="Parent or guardian name"
-          autoComplete="name"
-          error={errors.parentName?.message}
-          {...register('parentName')}
-        />
-        <Input
-          label="Parent or guardian phone"
-          type="tel"
-          autoComplete="tel"
-          error={errors.parentPhone?.message}
-          {...register('parentPhone')}
-        />
-        <Input
-          label="Parent or guardian email"
-          type="email"
-          autoComplete="email"
-          error={errors.parentEmail?.message}
-          {...register('parentEmail')}
-        />
+        {isAdmin ? (
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-slate-700">Role</p>
+            <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
+              {ADMIN_ROLE_LABEL}
+            </p>
+          </div>
+        ) : null}
 
         {submitError ? (
           <p className="text-sm text-red-600" role="alert">

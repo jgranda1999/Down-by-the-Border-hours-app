@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Profile, ProfileUpdate } from '@/types'
+import type { Profile, ProfileUpdate, UserRole } from '@/types'
 
 export async function getProfile(userId: string): Promise<Profile> {
   const { data, error } = await supabase
@@ -25,4 +25,70 @@ export async function updateProfile(
 
   if (error) throw error
   return data
+}
+
+export interface ListProfilesOptions {
+  role?: UserRole
+  school?: string
+  search?: string
+}
+
+export async function listProfiles(
+  opts: ListProfilesOptions = {},
+): Promise<Profile[]> {
+  let query = supabase
+    .from('profiles')
+    .select('*')
+    .order('last_name', { ascending: true })
+    .order('first_name', { ascending: true })
+
+  if (opts.role) {
+    query = query.eq('role', opts.role)
+  }
+
+  const { data, error } = await query
+
+  if (error) throw error
+
+  let profiles = data
+
+  if (opts.school?.trim()) {
+    const schoolNeedle = opts.school.trim().toLowerCase()
+    profiles = profiles.filter((profile) =>
+      profile.school?.toLowerCase().includes(schoolNeedle),
+    )
+  }
+
+  if (opts.search?.trim()) {
+    const searchNeedle = opts.search.trim().toLowerCase()
+    profiles = profiles.filter((profile) => {
+      const fullName = `${profile.first_name} ${profile.last_name}`.toLowerCase()
+      return (
+        fullName.includes(searchNeedle) ||
+        profile.email.toLowerCase().includes(searchNeedle)
+      )
+    })
+  }
+
+  return profiles
+}
+
+export async function updateUserRole(
+  userId: string,
+  role: UserRole,
+): Promise<Profile> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({ role })
+    .eq('id', userId)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+export function formatProfileName(profile: Profile): string {
+  const name = `${profile.first_name} ${profile.last_name}`.trim()
+  return name || profile.email
 }

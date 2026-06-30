@@ -12,6 +12,7 @@ create table public.profiles (
   email text not null,
   phone text,
   school text,
+  title text,
   parent_name text,
   parent_phone text,
   parent_email text,
@@ -138,3 +139,10 @@ create policy "Update own recent logs or any if admin"
 create policy "Admins can delete logs"
   on public.hour_logs for delete
   using (public.is_admin());
+
+create policy "Delete own recent logs"
+  on public.hour_logs for delete
+  using (
+    auth.uid() = volunteer_id
+    and created_at > now() - interval '24 hours'
+  );

@@ -36,23 +36,23 @@ A staged checklist for building the MVP. Work top-to-bottom. Each phase should p
 
 ## Phase 3 — Volunteer flows (~3 hrs)
 
-- [ ] Volunteer dashboard: total hours, recent 5 logs, "Log Hours" CTA
-- [ ] Log Hours form (event name, date, sign-in time, sign-out time, notes)
+- [x] Volunteer dashboard: total hours, recent 5 logs, "Log Hours" CTA
+- [x] Log Hours form (event name, date, sign-in time, sign-out time, notes)
   - Auto-calculate hours from sign-in/out
   - Validate sign-out > sign-in
-- [ ] My Hours page: full history, sortable by date
-- [ ] Edit log (only within 24 hours of creation)
-- [ ] Delete log (only within 24 hours — UI-gated; RLS would block anyway)
-- [ ] Profile page: edit own info
+- [x] My Hours page: full history, sortable by date
+- [x] Edit log (only within 24 hours of creation)
+- [x] Delete log (only within 24 hours — UI-gated; RLS would block anyway)
+- [x] Shared `/profile` page: edit own info (volunteers + admins)
 
 ## Phase 4 — Admin flows (~3 hrs)
 
-- [ ] Admin dashboard: total volunteers, total hours this month, recent activity
-- [ ] All Logs page: table with filters (volunteer, school, date range, event search)
-- [ ] Edit / delete any log
-- [ ] Volunteers list: searchable, filter by school
-- [ ] Volunteer detail page: their profile + full hour history + "Generate Letter" button
-- [ ] Manage Admins: list of all users with role toggle
+- [x] Admin dashboard: total volunteers, total hours this month, recent activity
+- [x] All Logs page: table with filters (volunteer, school, date range, event search)
+- [x] Edit / delete any log
+- [x] Volunteers list: searchable, filter by school
+- [x] Volunteer detail page: their profile + full hour history + "Generate Letter" button
+- [x] Manage Admins: list of all users with role toggle
 
 ## Phase 5 — Reports (~2 hrs)
 
