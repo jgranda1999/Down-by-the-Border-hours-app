@@ -1,4 +1,5 @@
 import type { InputHTMLAttributes } from 'react'
+import { formControlBorderClass, formControlClassName } from '@/components/ui/formStyles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
@@ -15,7 +16,7 @@ function Input({ label, error, id, className = '', ...props }: InputProps) {
       </label>
       <input
         id={inputId}
-        className={`block w-full min-h-11 rounded-lg border px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 ${error ? 'border-red-500' : 'border-slate-300'} ${className}`}
+        className={`${formControlClassName} ${formControlBorderClass(Boolean(error))} ${className}`}
         {...props}
       />
       {error ? <p className="text-sm text-red-600">{error}</p> : null}

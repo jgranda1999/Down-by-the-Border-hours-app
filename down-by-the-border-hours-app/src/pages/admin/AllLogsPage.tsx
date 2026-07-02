@@ -6,6 +6,7 @@ import ErrorState from '@/components/ui/ErrorState'
 import Input from '@/components/ui/Input'
 import PageHeader from '@/components/ui/PageHeader'
 import TableSkeleton from '@/components/ui/TableSkeleton'
+import { formControlClassName, formControlBorderClass } from '@/components/ui/formStyles'
 import { deleteHourLog, listHourLogs } from '@/lib/api/hourLogs'
 import { formatProfileName, listProfiles } from '@/lib/api/profiles'
 import { downloadHourLogsCsv } from '@/lib/utils/csv'
@@ -101,7 +102,7 @@ function AllLogsPage() {
             </label>
             <select
               id="volunteer-filter"
-              className="block w-full min-h-11 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+              className={`${formControlClassName} bg-white ${formControlBorderClass()}`}
               value={volunteerId}
               onChange={(event) => setVolunteerId(event.target.value)}
             >

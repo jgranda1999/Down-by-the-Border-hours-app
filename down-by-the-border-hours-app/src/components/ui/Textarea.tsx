@@ -1,4 +1,5 @@
 import type { TextareaHTMLAttributes } from 'react'
+import { formControlBorderClass, formControlClassName } from '@/components/ui/formStyles'
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string
@@ -15,7 +16,7 @@ function Textarea({ label, error, id, className = '', ...props }: TextareaProps)
       </label>
       <textarea
         id={textareaId}
-        className={`block w-full rounded-lg border px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 ${error ? 'border-red-500' : 'border-slate-300'} ${className}`}
+        className={`${formControlClassName} ${formControlBorderClass(Boolean(error))} ${className}`}
         rows={3}
         {...props}
       />

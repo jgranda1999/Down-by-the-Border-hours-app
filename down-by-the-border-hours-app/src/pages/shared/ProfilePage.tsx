@@ -17,6 +17,7 @@ import {
   isAdminProfile,
   SCHOOL_DATALIST_OPTIONS,
 } from '@/lib/utils/profile'
+import { formControlBorderClass, formControlClassName } from '@/components/ui/formStyles'
 
 const volunteerProfileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -174,7 +175,7 @@ function ProfilePage() {
               <input
                 id="admin-school"
                 list="admin-profile-school-suggestions"
-                className={`block w-full min-h-11 rounded-lg border px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 ${adminForm.formState.errors.school ? 'border-red-500' : 'border-slate-300'}`}
+                className={`${formControlClassName} ${formControlBorderClass(Boolean(adminForm.formState.errors.school))}`}
                 {...adminForm.register('school')}
               />
               <datalist id="admin-profile-school-suggestions">
@@ -242,7 +243,7 @@ function ProfilePage() {
               <input
                 id="school"
                 list="profile-school-suggestions"
-                className={`block w-full min-h-11 rounded-lg border px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 ${volunteerForm.formState.errors.school ? 'border-red-500' : 'border-slate-300'}`}
+                className={`${formControlClassName} ${formControlBorderClass(Boolean(volunteerForm.formState.errors.school))}`}
                 {...volunteerForm.register('school')}
               />
             <datalist id="profile-school-suggestions">

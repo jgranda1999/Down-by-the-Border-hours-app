@@ -17,6 +17,7 @@ import {
   isAdminProfile,
   SCHOOL_DATALIST_OPTIONS,
 } from '@/lib/utils/profile'
+import { formControlBorderClass, formControlClassName } from '@/components/ui/formStyles'
 
 const profileSetupSchema = z.object({
   phone: z.string().min(1, 'We need a phone number to reach you'),
@@ -91,7 +92,7 @@ function ProfileSetupPage() {
           <input
             id="school"
             list="school-suggestions"
-            className={`block w-full min-h-11 rounded-lg border px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 ${errors.school ? 'border-red-500' : 'border-slate-300'}`}
+            className={`${formControlClassName} ${formControlBorderClass(Boolean(errors.school))}`}
             placeholder="Start typing your school"
             {...register('school')}
           />
