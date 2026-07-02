@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import EmptyState from '@/components/ui/EmptyState'
 import ErrorState from '@/components/ui/ErrorState'
-import Spinner from '@/components/ui/Spinner'
+import PageHeader from '@/components/ui/PageHeader'
+import TableSkeleton from '@/components/ui/TableSkeleton'
 import { useAuth } from '@/hooks/useAuth'
 import { deleteHourLog, listHourLogsForVolunteer, sumHours } from '@/lib/api/hourLogs'
+import { appToast } from '@/lib/toast'
 import { formatDate, formatTime } from '@/lib/utils/dates'
 import { canEditLog, formatHours } from '@/lib/utils/hours'
 import type { HourLog } from '@/types'
@@ -54,15 +56,24 @@ function MyHoursPage() {
       setDeletingId(log.id)
       await deleteHourLog(log.id)
       setLogs((current) => current.filter((item) => item.id !== log.id))
+      appToast.success('Log deleted.')
     } catch {
-      setError('Could not delete that log. It may be older than 24 hours.')
+      appToast.error('Could not delete that log. It may be older than 24 hours.')
     } finally {
       setDeletingId(null)
     }
   }
 
   if (isLoading) {
-    return <Spinner label="Loading your hours" />
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-semibold text-slate-900">My hours</h1>
+          <p className="mt-1 text-sm text-slate-600">Loading your history…</p>
+        </div>
+        <TableSkeleton columns={5} />
+      </div>
+    )
   }
 
   if (error && logs.length === 0) {
@@ -71,21 +82,19 @@ function MyHoursPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900">My hours</h1>
-          <p className="mt-1 text-sm text-slate-600">
-            {formatHours(sumHours(logs))} total hours logged
-          </p>
-        </div>
-        <Link to="/hours/log">
-          <Button>Log hours</Button>
-        </Link>
-      </div>
+      <PageHeader
+        title="My hours"
+        description={`${formatHours(sumHours(logs))} total hours logged`}
+        action={
+          <Link to="/hours/log">
+            <Button className="w-full sm:w-auto">Log hours</Button>
+          </Link>
+        }
+      />
 
       {error ? <ErrorState message={error} /> : null}
 
-      {sortedLogs.length === 0 ? (
+      {!error && sortedLogs.length === 0 ? (
         <EmptyState
           title="No hours yet"
           description="Once you log hours for an event, they'll show up here."
@@ -95,7 +104,7 @@ function MyHoursPage() {
             </Link>
           }
         />
-      ) : (
+      ) : sortedLogs.length > 0 ? (
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
           <div className="overflow-x-auto">
             <table className="min-w-full text-left text-sm">
@@ -162,7 +171,7 @@ function MyHoursPage() {
             </table>
           </div>
         </section>
-      )}
+      ) : null}
     </div>
   )
 }

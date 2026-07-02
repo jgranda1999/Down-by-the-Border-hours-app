@@ -3,7 +3,9 @@ import { Link, useParams } from 'react-router-dom'
 import ServiceHourLetterPanel from '@/components/admin/ServiceHourLetterPanel'
 import Button from '@/components/ui/Button'
 import ErrorState from '@/components/ui/ErrorState'
-import Spinner from '@/components/ui/Spinner'
+import PageHeader from '@/components/ui/PageHeader'
+import Skeleton from '@/components/ui/Skeleton'
+import TableSkeleton from '@/components/ui/TableSkeleton'
 import { listHourLogsForVolunteer, sumHours } from '@/lib/api/hourLogs'
 import { formatProfileName, getProfile } from '@/lib/api/profiles'
 import { formatDate, formatTime } from '@/lib/utils/dates'
@@ -41,7 +43,19 @@ function VolunteerDetailPage() {
   }, [volunteerId])
 
   if (isLoading) {
-    return <Spinner label="Loading volunteer" />
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-56" />
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <Skeleton className="h-6 w-24" />
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </section>
+        <TableSkeleton columns={4} />
+      </div>
+    )
   }
 
   if (error || !profile) {
@@ -57,17 +71,17 @@ function VolunteerDetailPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900">
-            {formatProfileName(profile)}
-          </h1>
-          <p className="mt-1 text-sm text-slate-600">{profile.email}</p>
-        </div>
-        <Link to="/admin/volunteers">
-          <Button variant="secondary">Back</Button>
-        </Link>
-      </div>
+      <PageHeader
+        title={formatProfileName(profile)}
+        description={profile.email}
+        action={
+          <Link to="/admin/volunteers">
+            <Button variant="secondary" className="w-full sm:w-auto">
+              Back
+            </Button>
+          </Link>
+        }
+      />
 
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900">Profile</h2>

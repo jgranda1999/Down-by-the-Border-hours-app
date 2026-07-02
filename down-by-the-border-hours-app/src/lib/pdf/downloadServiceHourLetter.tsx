@@ -1,10 +1,9 @@
-import { pdf } from '@react-pdf/renderer'
 import { formatProfileName } from '@/lib/api/profiles'
 import { sumHours } from '@/lib/api/hourLogs'
 import { formatDateRangeLabel } from '@/lib/utils/reports'
 import { downloadBlob, sanitizeFilename } from '@/lib/utils/download'
+import { BRAND_LOGO_SRC } from '@/lib/brand'
 import { formatDate } from '@/lib/utils/dates'
-import ServiceHourLetter from '@/pdf/ServiceHourLetter'
 import type { HourLog, Profile } from '@/types'
 
 export interface DownloadServiceHourLetterInput {
@@ -31,6 +30,11 @@ export async function downloadServiceHourLetter(
     return a.created_at.localeCompare(b.created_at)
   })
 
+  const [{ pdf }, { default: ServiceHourLetter }] = await Promise.all([
+    import('@react-pdf/renderer'),
+    import('@/pdf/ServiceHourLetter'),
+  ])
+
   const blob = await pdf(
     <ServiceHourLetter
       volunteer={volunteer}
@@ -40,6 +44,7 @@ export async function downloadServiceHourLetter(
       adminName={formatProfileName(admin)}
       adminTitle={admin.title?.trim() || undefined}
       generatedDate={formatDate(new Date().toISOString().slice(0, 10))}
+      logoSrc={BRAND_LOGO_SRC}
     />,
   ).toBlob()
 

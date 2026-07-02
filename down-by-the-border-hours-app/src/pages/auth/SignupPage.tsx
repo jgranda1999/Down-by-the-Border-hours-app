@@ -8,15 +8,19 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Modal from '@/components/ui/Modal'
 import { useAuth } from '@/hooks/useAuth'
+import { appToast } from '@/lib/toast'
 import { getErrorMessage } from '@/lib/utils/errors'
 
 const signupSchema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-  email: z.string().min(1, 'Email is required').email('Enter a valid email'),
+  firstName: z.string().min(1, 'What\'s your first name?'),
+  lastName: z.string().min(1, 'What\'s your last name?'),
+  email: z
+    .string()
+    .min(1, 'Enter your email address')
+    .email('That doesn\'t look like a valid email'),
   password: z
     .string()
-    .min(8, 'Password must be at least 8 characters'),
+    .min(8, 'Use at least 8 characters for your password'),
 })
 
 type SignupFormData = z.infer<typeof signupSchema>
@@ -24,7 +28,6 @@ type SignupFormData = z.infer<typeof signupSchema>
 function SignupPage() {
   const navigate = useNavigate()
   const { signUp } = useAuth()
-  const [submitError, setSubmitError] = useState<string | null>(null)
   const [confirmationEmail, setConfirmationEmail] = useState<string | null>(null)
 
   const {
@@ -36,8 +39,6 @@ function SignupPage() {
   })
 
   const onSubmit = async (values: SignupFormData) => {
-    setSubmitError(null)
-
     try {
       const result = await signUp(
         values.email,
@@ -53,7 +54,7 @@ function SignupPage() {
 
       navigate('/profile/setup', { replace: true })
     } catch (error) {
-      setSubmitError(getErrorMessage(error, 'Could not create your account. Try again.'))
+      appToast.error(getErrorMessage(error, 'Could not create your account. Try again.'))
     }
   }
 
@@ -105,12 +106,6 @@ function SignupPage() {
             error={errors.password?.message}
             {...register('password')}
           />
-
-          {submitError ? (
-            <p className="text-sm text-red-600" role="alert">
-              {submitError}
-            </p>
-          ) : null}
 
           <Button type="submit" className="w-full" isLoading={isSubmitting}>
             Create account

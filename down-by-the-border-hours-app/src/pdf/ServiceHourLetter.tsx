@@ -1,5 +1,6 @@
 import {
   Document,
+  Image,
   Page,
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ export interface ServiceHourLetterProps {
   adminName: string
   adminTitle?: string
   generatedDate: string
+  logoSrc: string
 }
 
 const styles = StyleSheet.create({
@@ -38,15 +40,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#cbd5e1',
   },
   logoPlaceholder: {
-    width: 56,
     height: 56,
-    backgroundColor: '#e2e8f0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logoText: {
-    fontSize: 9,
-    color: '#64748b',
+    maxWidth: 120,
+    objectFit: 'contain',
   },
   orgName: {
     fontSize: 18,
@@ -142,6 +138,7 @@ function ServiceHourLetter({
   adminName,
   adminTitle,
   generatedDate,
+  logoSrc,
 }: ServiceHourLetterProps) {
   const studentName = formatProfileName(volunteer)
   const school = volunteer.school?.trim() || 'Not listed'
@@ -154,9 +151,7 @@ function ServiceHourLetter({
             <Text style={styles.orgName}>Down By The Border</Text>
             <Text style={styles.orgTagline}>Volunteer service verification</Text>
           </View>
-          <View style={styles.logoPlaceholder}>
-            <Text style={styles.logoText}>LOGO</Text>
-          </View>
+          <Image src={logoSrc} style={styles.logoPlaceholder} />
         </View>
 
         <Text style={styles.salutation}>To Whom It May Concern,</Text>

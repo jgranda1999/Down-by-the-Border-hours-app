@@ -3,9 +3,11 @@ import Button from '@/components/ui/Button'
 import EmptyState from '@/components/ui/EmptyState'
 import ErrorState from '@/components/ui/ErrorState'
 import Input from '@/components/ui/Input'
-import Spinner from '@/components/ui/Spinner'
+import PageHeader from '@/components/ui/PageHeader'
+import TableSkeleton from '@/components/ui/TableSkeleton'
 import { useAuth } from '@/hooks/useAuth'
 import { formatProfileName, listProfiles, updateUserRole } from '@/lib/api/profiles'
+import { appToast } from '@/lib/toast'
 import { getErrorMessage } from '@/lib/utils/errors'
 import { ADMIN_ROLE_LABEL } from '@/lib/utils/profile'
 import type { Profile } from '@/types'
@@ -20,7 +22,6 @@ function ManageAdminsPage() {
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [updatingId, setUpdatingId] = useState<string | null>(null)
-  const [actionError, setActionError] = useState<string | null>(null)
 
   const loadAdmins = async () => {
     try {
@@ -52,9 +53,8 @@ function ManageAdminsPage() {
       setHasSearched(true)
       const data = await listProfiles({ role: 'volunteer', search: query })
       setVolunteerResults(data)
-      setActionError(null)
     } catch {
-      setActionError('Could not search volunteers.')
+      appToast.error('Could not search volunteers.')
     } finally {
       setIsSearching(false)
     }
@@ -62,7 +62,7 @@ function ManageAdminsPage() {
 
   const handleDemote = async (target: Profile) => {
     if (target.id === user?.id) {
-      setActionError('You cannot change your own role here.')
+      appToast.error('You cannot change your own role here.')
       return
     }
 
@@ -74,11 +74,11 @@ function ManageAdminsPage() {
 
     try {
       setUpdatingId(target.id)
-      setActionError(null)
       await updateUserRole(target.id, 'volunteer')
       setAdmins((current) => current.filter((item) => item.id !== target.id))
+      appToast.success('Admin access removed.')
     } catch (demoteError) {
-      setActionError(
+      appToast.error(
         getErrorMessage(demoteError, 'Could not update this user\'s role.'),
       )
     } finally {
@@ -95,7 +95,6 @@ function ManageAdminsPage() {
 
     try {
       setUpdatingId(target.id)
-      setActionError(null)
       const updated = await updateUserRole(target.id, 'admin')
       setAdmins((current) =>
         [...current, updated].sort((a, b) =>
@@ -107,8 +106,9 @@ function ManageAdminsPage() {
       setVolunteerResults((current) =>
         current.filter((item) => item.id !== target.id),
       )
+      appToast.success(`${formatProfileName(updated)} is now an admin.`)
     } catch (promoteError) {
-      setActionError(
+      appToast.error(
         getErrorMessage(promoteError, 'Could not update this user\'s role.'),
       )
     } finally {
@@ -117,7 +117,14 @@ function ManageAdminsPage() {
   }
 
   if (isLoadingAdmins) {
-    return <Spinner label="Loading admins" />
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-2xl font-semibold text-slate-900">Manage admins</h1>
+        </div>
+        <TableSkeleton columns={4} rows={3} />
+      </div>
+    )
   }
 
   if (error) {
@@ -126,15 +133,10 @@ function ManageAdminsPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Manage admins</h1>
-        <p className="mt-1 text-sm text-slate-600">
-          View current admins and promote trusted volunteers. New users must sign
-          up first — then you can search for them below.
-        </p>
-      </div>
-
-      {actionError ? <ErrorState message={actionError} /> : null}
+      <PageHeader
+        title="Manage admins"
+        description="View current admins and promote trusted volunteers. New users must sign up first — then you can search for them below."
+      />
 
       <section className="space-y-4">
         <div>
@@ -231,13 +233,13 @@ function ManageAdminsPage() {
                 onChange={(event) => setSearch(event.target.value)}
               />
             </div>
-            <Button type="submit" isLoading={isSearching}>
+            <Button type="submit" className="w-full sm:w-auto" isLoading={isSearching}>
               Search
             </Button>
           </form>
         </div>
 
-        {isSearching ? <Spinner label="Searching volunteers" /> : null}
+        {isSearching ? <TableSkeleton columns={4} rows={2} /> : null}
 
         {!isSearching && !hasSearched ? (
           <EmptyState

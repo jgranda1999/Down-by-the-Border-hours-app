@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import EmptyState from '@/components/ui/EmptyState'
 import ErrorState from '@/components/ui/ErrorState'
-import Spinner from '@/components/ui/Spinner'
+import DashboardSkeleton from '@/components/ui/DashboardSkeleton'
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import { listHourLogsForVolunteer, sumHours } from '@/lib/api/hourLogs'
@@ -38,7 +38,7 @@ function VolunteerDashboardPage() {
   }, [user])
 
   if (isLoading) {
-    return <Spinner label="Loading your dashboard" />
+    return <DashboardSkeleton />
   }
 
   if (error) {
@@ -51,10 +51,10 @@ function VolunteerDashboardPage() {
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-slate-900">
+        <h1 className="text-xl font-semibold text-slate-900 sm:text-2xl">
           Hey, {profile?.first_name || 'volunteer'}!
         </h1>
-        <p className="mt-2 text-3xl font-semibold text-slate-900">
+        <p className="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl">
           {formatHours(totalHours)} <span className="text-lg font-normal text-slate-600">total hours</span>
         </p>
         <div className="mt-6">

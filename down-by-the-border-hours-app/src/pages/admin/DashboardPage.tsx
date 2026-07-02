@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '@/components/ui/Button'
+import DashboardSkeleton from '@/components/ui/DashboardSkeleton'
+import EmptyState from '@/components/ui/EmptyState'
 import ErrorState from '@/components/ui/ErrorState'
-import Spinner from '@/components/ui/Spinner'
+import PageHeader from '@/components/ui/PageHeader'
 import { getAdminDashboardStats } from '@/lib/api/hourLogs'
 import type { AdminDashboardStats } from '@/lib/api/hourLogs'
 import { formatProfileName } from '@/lib/api/profiles'
@@ -32,7 +34,7 @@ function AdminDashboardPage() {
   }, [])
 
   if (isLoading) {
-    return <Spinner label="Loading dashboard" />
+    return <DashboardSkeleton />
   }
 
   if (error || !stats) {
@@ -41,12 +43,10 @@ function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Admin dashboard</h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Overview of volunteer activity across the nonprofit.
-        </p>
-      </div>
+      <PageHeader
+        title="Admin dashboard"
+        description="Overview of volunteer activity across the nonprofit."
+      />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -70,9 +70,10 @@ function AdminDashboardPage() {
         </div>
 
         {stats.recentLogs.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-600">
-            No hour logs yet. They&apos;ll show up here when volunteers start logging.
-          </p>
+          <EmptyState
+            title="No activity yet"
+            description="Hour logs will show up here when volunteers start logging."
+          />
         ) : (
           <ul className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
             {stats.recentLogs.map((log) => (

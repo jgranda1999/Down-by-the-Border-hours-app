@@ -4,6 +4,7 @@ import Input from '@/components/ui/Input'
 import { sumHours } from '@/lib/api/hourLogs'
 import { formatProfileName } from '@/lib/api/profiles'
 import { downloadServiceHourLetter } from '@/lib/pdf/downloadServiceHourLetter'
+import { appToast } from '@/lib/toast'
 import { filterLogsByDateRange } from '@/lib/utils/reports'
 import { formatHours } from '@/lib/utils/hours'
 import { getErrorMessage } from '@/lib/utils/errors'
@@ -20,7 +21,6 @@ function ServiceHourLetterPanel({ volunteer, logs }: ServiceHourLetterPanelProps
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   const filteredLogs = useMemo(
     () => filterLogsByDateRange(logs, from || undefined, to || undefined),
@@ -29,13 +29,12 @@ function ServiceHourLetterPanel({ volunteer, logs }: ServiceHourLetterPanelProps
 
   const handleDownload = async () => {
     if (!adminProfile) {
-      setError('Your admin profile could not be loaded. Try refreshing the page.')
+      appToast.error('Your admin profile could not be loaded. Try refreshing the page.')
       return
     }
 
     try {
       setIsGenerating(true)
-      setError(null)
       await downloadServiceHourLetter({
         volunteer,
         logs: filteredLogs,
@@ -43,8 +42,9 @@ function ServiceHourLetterPanel({ volunteer, logs }: ServiceHourLetterPanelProps
         to: to || undefined,
         admin: adminProfile,
       })
+      appToast.success('Letter downloaded.')
     } catch (downloadError) {
-      setError(
+      appToast.error(
         getErrorMessage(
           downloadError,
           'Could not generate the service-hour letter.',
@@ -84,14 +84,9 @@ function ServiceHourLetterPanel({ volunteer, logs }: ServiceHourLetterPanelProps
           : `${filteredLogs.length} ${filteredLogs.length === 1 ? 'entry' : 'entries'} · ${formatHours(sumHours(filteredLogs))} hours`}
       </p>
 
-      {error ? (
-        <p className="mt-3 text-sm text-red-600" role="alert">
-          {error}
-        </p>
-      ) : null}
-
       <div className="mt-4">
         <Button
+          className="w-full sm:w-auto"
           isLoading={isGenerating}
           disabled={filteredLogs.length === 0}
           onClick={() => void handleDownload()}

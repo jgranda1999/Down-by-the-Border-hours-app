@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,6 +9,7 @@ import Input from '@/components/ui/Input'
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import { updateProfile } from '@/lib/api/profiles'
+import { appToast } from '@/lib/toast'
 import { getErrorMessage } from '@/lib/utils/errors'
 import {
   ADMIN_ROLE_LABEL,
@@ -18,8 +19,8 @@ import {
 } from '@/lib/utils/profile'
 
 const profileSetupSchema = z.object({
-  phone: z.string().min(1, 'Phone number is required'),
-  school: z.string().min(1, 'School is required'),
+  phone: z.string().min(1, 'We need a phone number to reach you'),
+  school: z.string().min(1, 'Pick your school or choose Not applicable'),
 })
 
 type ProfileSetupFormData = z.infer<typeof profileSetupSchema>
@@ -28,7 +29,6 @@ function ProfileSetupPage() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const { profile, applyProfileUpdate } = useProfile()
-  const [submitError, setSubmitError] = useState<string | null>(null)
   const isAdmin = isAdminProfile(profile)
 
   const {
@@ -56,8 +56,6 @@ function ProfileSetupPage() {
   const onSubmit = async (values: ProfileSetupFormData) => {
     if (!user) return
 
-    setSubmitError(null)
-
     try {
       const updated = await updateProfile(user.id, {
         phone: values.phone,
@@ -66,7 +64,7 @@ function ProfileSetupPage() {
       applyProfileUpdate(updated)
       navigate(getHomePath(updated), { replace: true })
     } catch (error) {
-      setSubmitError(
+      appToast.error(
         getErrorMessage(error, 'Could not save your profile. Try again.'),
       )
     }
@@ -117,12 +115,6 @@ function ProfileSetupPage() {
               {ADMIN_ROLE_LABEL}
             </p>
           </div>
-        ) : null}
-
-        {submitError ? (
-          <p className="text-sm text-red-600" role="alert">
-            {submitError}
-          </p>
         ) : null}
 
         <Button type="submit" className="w-full" isLoading={isSubmitting}>

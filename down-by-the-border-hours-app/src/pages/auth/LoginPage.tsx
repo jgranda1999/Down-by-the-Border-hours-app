@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -7,11 +6,15 @@ import AuthLayout from '@/components/layout/AuthLayout'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import { useAuth } from '@/hooks/useAuth'
+import { appToast } from '@/lib/toast'
 import { getErrorMessage } from '@/lib/utils/errors'
 
 const loginSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Enter a valid email'),
-  password: z.string().min(1, 'Password is required'),
+  email: z
+    .string()
+    .min(1, 'Enter the email you signed up with')
+    .email('That doesn\'t look like a valid email'),
+  password: z.string().min(1, 'Enter your password'),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -19,7 +22,6 @@ type LoginFormData = z.infer<typeof loginSchema>
 function LoginPage() {
   const navigate = useNavigate()
   const { signIn } = useAuth()
-  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const {
     register,
@@ -30,13 +32,11 @@ function LoginPage() {
   })
 
   const onSubmit = async (values: LoginFormData) => {
-    setSubmitError(null)
-
     try {
       await signIn(values.email, values.password)
       navigate('/', { replace: true })
     } catch (error) {
-      setSubmitError(getErrorMessage(error, 'Could not sign you in. Try again.'))
+      appToast.error(getErrorMessage(error, 'Could not sign you in. Try again.'))
     }
   }
 
@@ -68,12 +68,6 @@ function LoginPage() {
           error={errors.password?.message}
           {...register('password')}
         />
-
-        {submitError ? (
-          <p className="text-sm text-red-600" role="alert">
-            {submitError}
-          </p>
-        ) : null}
 
         <Button type="submit" className="w-full" isLoading={isSubmitting}>
           Sign in

@@ -66,21 +66,19 @@ A staged checklist for building the MVP. Work top-to-bottom. Each phase should p
   - Admin signature line
 - [X] "Download Letter" from volunteer detail page
 
-## Phase 6 — Polish (~2 hrs)
+## Phase 6 — Auto Sign-up change 
+- [X] Open signup, no email confirmation required for MVP. Password reset uses Supabase default email (2/hour cap) — acceptable at this scale. Can add custom SMTP later if needed.
 
-- [ ] Loading skeletons (not just spinners) on tables and dashboards
-- [ ] Empty states with helpful copy
-- [ ] Toast notifications for success/error (use `sonner` or roll your own)
-- [ ] Mobile responsiveness pass (test at 375px)
-- [ ] Form validation messages user-friendly
-- [ ] Error boundary at app root
-- [ ] Favicon + page title
+## Phase 7 — Polish (~2 hrs)
 
-## Phase 7 — Ship
-
-- [ ] Figure out how to allow more supabase email verifications
-- [ ] Add Nonprofit logos and more customization to the design 
-- [ ] Figure out how to customize the vercel emmail auth 
+- [X] Loading skeletons (not just spinners) on tables and dashboards
+- [X] Empty states with helpful copy
+- [X] Toast notifications for success/error (use `sonner` or roll your own)
+- [X] Mobile responsiveness pass (test at 375px)
+- [X] Form validation messages user-friendly
+- [X] Error boundary at app root
+- [X] Favicon + page title
+- [X] Add Nonprofit logos and more customization to the design 
 
 ## Phase 8 — Ship
 

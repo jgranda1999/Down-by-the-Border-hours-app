@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import PageHeader from '@/components/ui/PageHeader'
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import { updateProfile } from '@/lib/api/profiles'
+import { appToast } from '@/lib/toast'
 import { getErrorMessage } from '@/lib/utils/errors'
 import {
   ADMIN_ROLE_LABEL,
@@ -19,21 +21,21 @@ import {
 const volunteerProfileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  phone: z.string().min(1, 'Phone number is required'),
-  school: z.string().min(1, 'School is required'),
-  parentName: z.string().min(1, 'Parent or guardian name is required'),
-  parentPhone: z.string().min(1, 'Parent or guardian phone is required'),
+  phone: z.string().min(1, 'Add a phone number we can reach you at'),
+  school: z.string().min(1, 'Pick your school or choose Not applicable'),
+  parentName: z.string().min(1, 'Add a parent or guardian name'),
+  parentPhone: z.string().min(1, 'Add a parent or guardian phone number'),
   parentEmail: z
     .string()
-    .min(1, 'Parent or guardian email is required')
-    .email('Enter a valid email'),
+    .min(1, 'Add a parent or guardian email')
+    .email('That doesn\'t look like a valid email'),
 })
 
 const adminProfileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  phone: z.string().min(1, 'Phone number is required'),
-  school: z.string().min(1, 'School is required'),
+  phone: z.string().min(1, 'Add a phone number we can reach you at'),
+  school: z.string().min(1, 'Pick your school or choose Not applicable'),
   title: z.string().optional(),
 })
 
@@ -43,8 +45,6 @@ type AdminProfileFormData = z.infer<typeof adminProfileSchema>
 function ProfilePage() {
   const { user } = useAuth()
   const { profile, applyProfileUpdate } = useProfile()
-  const [submitError, setSubmitError] = useState<string | null>(null)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const isAdmin = isAdminProfile(profile)
 
   const volunteerForm = useForm<VolunteerProfileFormData>({
@@ -83,9 +83,6 @@ function ProfilePage() {
   const onSubmitVolunteer = async (values: VolunteerProfileFormData) => {
     if (!user) return
 
-    setSubmitError(null)
-    setSuccessMessage(null)
-
     try {
       const updated = await updateProfile(user.id, {
         first_name: values.firstName,
@@ -97,9 +94,9 @@ function ProfilePage() {
         parent_email: values.parentEmail,
       })
       applyProfileUpdate(updated)
-      setSuccessMessage('Profile updated.')
+      appToast.success('Profile updated.')
     } catch (error) {
-      setSubmitError(
+      appToast.error(
         getErrorMessage(error, 'Could not save your profile. Try again.'),
       )
     }
@@ -107,9 +104,6 @@ function ProfilePage() {
 
   const onSubmitAdmin = async (values: AdminProfileFormData) => {
     if (!user) return
-
-    setSubmitError(null)
-    setSuccessMessage(null)
 
     try {
       const updated = await updateProfile(user.id, {
@@ -120,9 +114,9 @@ function ProfilePage() {
         title: values.title?.trim() || null,
       })
       applyProfileUpdate(updated)
-      setSuccessMessage('Profile updated.')
+      appToast.success('Profile updated.')
     } catch (error) {
-      setSubmitError(
+      appToast.error(
         getErrorMessage(error, 'Could not save your profile. Try again.'),
       )
     }
@@ -130,17 +124,17 @@ function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Your profile</h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Update your info anytime. Your email can&apos;t be changed here.
-          </p>
-        </div>
-        <Link to={getHomePath(profile)}>
-          <Button variant="secondary">Back</Button>
-        </Link>
-      </div>
+      <PageHeader
+        title="Your profile"
+        description="Update your info anytime. Your email can&apos;t be changed here."
+        action={
+          <Link to={getHomePath(profile)}>
+            <Button variant="secondary" className="w-full sm:w-auto">
+              Back
+            </Button>
+          </Link>
+        }
+      />
 
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="mb-4">
@@ -208,18 +202,6 @@ function ProfilePage() {
               error={adminForm.formState.errors.title?.message}
               {...adminForm.register('title')}
             />
-
-            {submitError ? (
-              <p className="text-sm text-red-600" role="alert">
-                {submitError}
-              </p>
-            ) : null}
-
-            {successMessage ? (
-              <p className="text-sm text-green-700" role="status">
-                {successMessage}
-              </p>
-            ) : null}
 
             <Button type="submit" isLoading={adminForm.formState.isSubmitting}>
               Save changes
@@ -292,18 +274,6 @@ function ProfilePage() {
               error={volunteerForm.formState.errors.parentEmail?.message}
               {...volunteerForm.register('parentEmail')}
             />
-
-            {submitError ? (
-              <p className="text-sm text-red-600" role="alert">
-                {submitError}
-              </p>
-            ) : null}
-
-            {successMessage ? (
-              <p className="text-sm text-green-700" role="status">
-                {successMessage}
-              </p>
-            ) : null}
 
             <Button type="submit" isLoading={volunteerForm.formState.isSubmitting}>
               Save changes

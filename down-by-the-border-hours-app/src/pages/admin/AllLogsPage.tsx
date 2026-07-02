@@ -4,10 +4,12 @@ import Button from '@/components/ui/Button'
 import EmptyState from '@/components/ui/EmptyState'
 import ErrorState from '@/components/ui/ErrorState'
 import Input from '@/components/ui/Input'
-import Spinner from '@/components/ui/Spinner'
+import PageHeader from '@/components/ui/PageHeader'
+import TableSkeleton from '@/components/ui/TableSkeleton'
 import { deleteHourLog, listHourLogs } from '@/lib/api/hourLogs'
 import { formatProfileName, listProfiles } from '@/lib/api/profiles'
 import { downloadHourLogsCsv } from '@/lib/utils/csv'
+import { appToast } from '@/lib/toast'
 import { formatDate, formatTime } from '@/lib/utils/dates'
 import { formatHours } from '@/lib/utils/hours'
 import type { HourLogWithVolunteer, Profile } from '@/types'
@@ -76,8 +78,9 @@ function AllLogsPage() {
       setDeletingId(log.id)
       await deleteHourLog(log.id)
       setLogs((current) => current.filter((item) => item.id !== log.id))
+      appToast.success('Log deleted.')
     } catch {
-      setError('Could not delete that log.')
+      appToast.error('Could not delete that log.')
     } finally {
       setDeletingId(null)
     }
@@ -85,12 +88,10 @@ function AllLogsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">All logs</h1>
-        <p className="mt-1 text-sm text-slate-600">
-          View and manage volunteer hours across every school and event.
-        </p>
-      </div>
+      <PageHeader
+        title="All logs"
+        description="View and manage volunteer hours across every school and event."
+      />
 
       <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -136,19 +137,25 @@ function AllLogsPage() {
             onChange={(event) => setTo(event.target.value)}
           />
         </div>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Button onClick={handleApplyFilters}>Apply filters</Button>
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <Button className="w-full sm:w-auto" onClick={handleApplyFilters}>
+            Apply filters
+          </Button>
           <Button
+            className="w-full sm:w-auto"
             variant="secondary"
             disabled={isLoading || logs.length === 0}
-            onClick={() => downloadHourLogsCsv(logs)}
+            onClick={() => {
+              downloadHourLogsCsv(logs)
+              appToast.success('CSV downloaded.')
+            }}
           >
             Export CSV
           </Button>
         </div>
       </section>
 
-      {isLoading ? <Spinner label="Loading logs" /> : null}
+      {isLoading ? <TableSkeleton columns={7} /> : null}
       {error ? <ErrorState message={error} /> : null}
 
       {!isLoading && logs.length === 0 ? (

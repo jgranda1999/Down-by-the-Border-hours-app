@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import BrandLogo from '@/components/ui/BrandLogo'
 
 interface AuthLayoutProps {
   title: string
@@ -10,13 +11,13 @@ interface AuthLayoutProps {
 
 function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProps) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-8">
-      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <div className="mb-6 text-center">
-          <Link to="/" className="text-lg font-semibold text-slate-900">
-            Down By The Border
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-6 sm:py-8">
+      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+        <div className="mb-6 rounded-lg bg-slate-50 px-4 py-5 text-center">
+          <Link to="/" className="inline-flex justify-center">
+            <BrandLogo />
           </Link>
-          <h1 className="mt-4 text-2xl font-semibold text-slate-900">{title}</h1>
+          <h1 className="mt-4 text-xl font-semibold text-slate-900 sm:text-2xl">{title}</h1>
           <p className="mt-2 text-sm text-slate-600">{subtitle}</p>
         </div>
 

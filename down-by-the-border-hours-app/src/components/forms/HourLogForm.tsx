@@ -9,10 +9,10 @@ import { calculateHours, combineDateAndTime } from '@/lib/utils/hours'
 
 const hourLogSchema = z
   .object({
-    eventName: z.string().min(1, 'Event name is required'),
-    eventDate: z.string().min(1, 'Event date is required'),
-    signInTime: z.string().min(1, 'Sign-in time is required'),
-    signOutTime: z.string().min(1, 'Sign-out time is required'),
+    eventName: z.string().min(1, 'What event did you volunteer at?'),
+    eventDate: z.string().min(1, 'Pick the date of the event'),
+    signInTime: z.string().min(1, 'When did you sign in?'),
+    signOutTime: z.string().min(1, 'When did you sign out?'),
     notes: z.string().optional(),
   })
   .refine(
@@ -22,7 +22,7 @@ const hourLogSchema = z
       return signOut > signIn
     },
     {
-      message: 'Sign-out must be after sign-in',
+      message: 'Sign-out has to be after sign-in',
       path: ['signOutTime'],
     },
   )
@@ -34,7 +34,7 @@ const hourLogSchema = z
       return hours > 0 && hours <= 24
     },
     {
-      message: 'Hours must be between 0 and 24',
+      message: 'That shift would be more than 24 hours — double-check your times',
       path: ['signOutTime'],
     },
   )
@@ -123,7 +123,7 @@ function HourLogForm({
     <form className="space-y-4" onSubmit={handleSubmit(handleFormSubmit)}>
       <Input
         label="Event name"
-        placeholder="e.g. Border cleanup day"
+        placeholder="e.g. Field day"
         error={errors.eventName?.message}
         {...register('eventName')}
       />

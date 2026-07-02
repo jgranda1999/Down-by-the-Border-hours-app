@@ -3,9 +3,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import HourLogForm from '@/components/forms/HourLogForm'
 import Button from '@/components/ui/Button'
 import ErrorState from '@/components/ui/ErrorState'
-import Spinner from '@/components/ui/Spinner'
+import Skeleton from '@/components/ui/Skeleton'
 import { getHourLog, updateHourLog } from '@/lib/api/hourLogs'
 import { formatProfileName, getProfile } from '@/lib/api/profiles'
+import { appToast } from '@/lib/toast'
 import { getErrorMessage } from '@/lib/utils/errors'
 import { toTimeInputValue } from '@/lib/utils/hours'
 import type { HourLog, Profile } from '@/types'
@@ -17,7 +18,6 @@ function AdminEditLogPage() {
   const [volunteer, setVolunteer] = useState<Profile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [submitError, setSubmitError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!logId) return
@@ -40,7 +40,18 @@ function AdminEditLogPage() {
   }, [logId])
 
   if (isLoading) {
-    return <Spinner label="Loading log" />
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-40" />
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="space-y-4">
+            <Skeleton className="h-11 w-full" />
+            <Skeleton className="h-11 w-full" />
+            <Skeleton className="h-11 w-full" />
+          </div>
+        </section>
+      </div>
+    )
   }
 
   if (error || !log || !volunteer) {
@@ -69,12 +80,6 @@ function AdminEditLogPage() {
       </div>
 
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        {submitError ? (
-          <p className="mb-4 text-sm text-red-600" role="alert">
-            {submitError}
-          </p>
-        ) : null}
-
         <HourLogForm
           submitLabel="Save changes"
           defaultValues={{
@@ -86,8 +91,6 @@ function AdminEditLogPage() {
           }}
           onCancel={() => navigate('/admin/logs')}
           onSubmit={async (values) => {
-            setSubmitError(null)
-
             try {
               await updateHourLog(log.id, {
                 event_name: values.eventName,
@@ -97,9 +100,10 @@ function AdminEditLogPage() {
                 hours: values.hours,
                 notes: values.notes?.trim() || null,
               })
+              appToast.success('Log updated.')
               navigate('/admin/logs', { replace: true })
             } catch (submitErr) {
-              setSubmitError(
+              appToast.error(
                 getErrorMessage(submitErr, 'Could not update this log. Try again.'),
               )
             }
