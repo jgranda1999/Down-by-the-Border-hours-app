@@ -58,7 +58,7 @@ A staged checklist for building the MVP. Work top-to-bottom. Each phase should p
 
 - [X] CSV export from All Logs (respects current filters)
 - [X] PDF service-hour letter component (`@react-pdf/renderer`)
-  - Header with nonprofit name + logo placeholder
+  - Header with nonprofit name + logo
   - "To Whom It May Concern"
   - Student name, school, date range
   - Table of approved hours
@@ -82,8 +82,7 @@ A staged checklist for building the MVP. Work top-to-bottom. Each phase should p
 
 ## Phase 8 — Ship
 
-- [ ] Production env vars in Vercel
-- [ ] Custom domain (optional)
-- [ ] Test full flow: signup → log hours → admin sees it → admin downloads letter
-- [ ] Hand off admin credentials to nonprofit
-- [ ] Document how to add an admin manually (in case of lockout)
+- [x] Production env vars in Vercel
+- [x] Test full flow: signup → log hours → admin sees it → admin downloads letter
+- [x] Hand off admin credentials to nonprofit
+- [x] Document how to add an admin manually (in case of lockout) — see `docs/ADMIN_LOCKOUT.md`

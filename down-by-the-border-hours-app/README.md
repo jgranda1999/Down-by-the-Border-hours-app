@@ -1,75 +1,57 @@
-# React + TypeScript + Vite
+# Down By The Border — Hours App (frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite single-page app for the volunteer hours tracker. Deployed via the parent repo’s [vercel.json](../vercel.json).
 
-Currently, two official plugins are available:
+Full project overview: **[../README.md](../README.md)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Commands
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev      # local dev server
+npm run build    # production build → dist/
+npm run preview  # serve dist/ locally
+npm run lint     # ESLint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create `.env.local` in this directory:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+Never commit `.env.local`.
+
+## Source layout
 
 ```
+src/
+├── components/     # UI, layout, forms
+├── context/        # AuthProvider
+├── hooks/          # useAuth, useProfile, useIsAdmin
+├── lib/
+│   ├── api/        # Supabase queries (profiles, hourLogs)
+│   ├── pdf/        # Service-hour letter download
+│   └── utils/      # dates, hours, csv, toast, etc.
+├── pages/
+│   ├── auth/       # login, signup, profile setup
+│   ├── volunteer/  # dashboard, log hours, my hours
+│   ├── admin/      # dashboard, logs, volunteers, manage admins
+│   └── shared/     # profile
+├── pdf/            # ServiceHourLetter PDF template
+├── types/          # database.ts, shared types
+├── App.tsx         # routes
+└── main.tsx        # entry + Toaster + ErrorBoundary
+```
+
+## Conventions
+
+- All Supabase calls live in `src/lib/api/`
+- Forms use React Hook Form + Zod
+- Tailwind only (no extra CSS except `index.css`)
+- Form inputs use 16px font size (`text-base`) to avoid iOS Safari zoom on focus
+
+See [../.cursor/rules/project.mdc](../.cursor/rules/project.mdc) for Cursor/editor rules.
