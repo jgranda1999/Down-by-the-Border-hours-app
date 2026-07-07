@@ -1,7 +1,7 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import BrandLogo from '@/components/ui/BrandLogo'
-import { BRAND_TAGLINE } from '@/lib/brand'
+import { BRAND_TAGLINE, EVENT_PHOTOS_DRIVE_URL } from '@/lib/brand'
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import { getHomePath } from '@/lib/utils/profile'
@@ -12,6 +12,10 @@ function navLinkClass({ isActive }: { isActive: boolean }) {
       ? 'bg-brand-blue text-white'
       : 'text-brand-blue hover:bg-brand-blue-light'
   }`
+}
+
+function externalNavLinkClass() {
+  return 'shrink-0 rounded-lg px-3 py-2 text-sm font-medium transition text-brand-blue hover:bg-brand-blue-light'
 }
 
 function Header() {
@@ -85,6 +89,16 @@ function Header() {
                 <NavLink to="/hours" end className={navLinkClass}>
                   My hours
                 </NavLink>
+                {EVENT_PHOTOS_DRIVE_URL ? (
+                  <a
+                    href={EVENT_PHOTOS_DRIVE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={externalNavLinkClass()}
+                  >
+                    Upload event photos
+                  </a>
+                ) : null}
               </>
             )}
             <NavLink to="/profile" end className={navLinkClass}>
