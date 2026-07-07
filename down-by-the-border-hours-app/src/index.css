@@ -7,4 +7,8 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
+
+  body {
+    @apply bg-brand-surface text-brand-body antialiased;
+  }
 }

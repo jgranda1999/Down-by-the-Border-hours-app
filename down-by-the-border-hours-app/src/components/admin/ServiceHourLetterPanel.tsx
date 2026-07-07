@@ -56,9 +56,9 @@ function ServiceHourLetterPanel({ volunteer, logs }: ServiceHourLetterPanelProps
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">Service-hour letter</h2>
-      <p className="mt-1 text-sm text-slate-600">
+    <section className="rounded-xl border border-brand-border bg-white p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-brand-blue">Service-hour letter</h2>
+      <p className="mt-1 text-sm text-brand-muted">
         Generate a PDF verification letter for {formatProfileName(volunteer)}. Leave
         dates blank to include all logged hours.
       </p>
@@ -78,7 +78,7 @@ function ServiceHourLetterPanel({ volunteer, logs }: ServiceHourLetterPanelProps
         />
       </div>
 
-      <p className="mt-4 text-sm text-slate-600">
+      <p className="mt-4 text-sm text-brand-muted">
         {filteredLogs.length === 0
           ? 'No hours match this date range.'
           : `${filteredLogs.length} ${filteredLogs.length === 1 ? 'entry' : 'entries'} · ${formatHours(sumHours(filteredLogs))} hours`}

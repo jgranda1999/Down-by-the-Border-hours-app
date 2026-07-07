@@ -137,10 +137,10 @@ function ProfilePage() {
         }
       />
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-brand-border bg-white p-6 shadow-sm">
         <div className="mb-4">
-          <p className="text-sm font-medium text-slate-700">Email</p>
-          <p className="mt-1 text-slate-900">{profile?.email}</p>
+          <p className="text-sm font-medium text-brand-blue">Email</p>
+          <p className="mt-1 text-brand-ink">{profile?.email}</p>
         </div>
 
         {isAdmin ? (
@@ -169,7 +169,7 @@ function ProfilePage() {
             />
 
             <div className="space-y-1">
-              <label htmlFor="admin-school" className="block text-sm font-medium text-slate-700">
+              <label htmlFor="admin-school" className="block text-sm font-medium text-brand-blue">
                 School
               </label>
               <input
@@ -191,8 +191,8 @@ function ProfilePage() {
             </div>
 
             <div className="space-y-1">
-              <p className="text-sm font-medium text-slate-700">Role</p>
-              <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
+              <p className="text-sm font-medium text-brand-blue">Role</p>
+              <p className="rounded-lg border border-brand-border bg-brand-surface px-3 py-2 text-sm text-brand-ink">
                 {ADMIN_ROLE_LABEL}
               </p>
             </div>
@@ -237,7 +237,7 @@ function ProfilePage() {
             />
 
             <div className="space-y-1">
-              <label htmlFor="school" className="block text-sm font-medium text-slate-700">
+              <label htmlFor="school" className="block text-sm font-medium text-brand-blue">
                 School
               </label>
               <input

@@ -12,7 +12,7 @@ function Select({ label, error, id, options, className = '', ...props }: SelectP
 
   return (
     <div className="space-y-1">
-      <label htmlFor={selectId} className="block text-sm font-medium text-slate-700">
+      <label htmlFor={selectId} className="block text-sm font-medium text-brand-blue">
         {label}
       </label>
       <select

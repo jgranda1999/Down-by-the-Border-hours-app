@@ -7,6 +7,7 @@ import {
   View,
 } from '@react-pdf/renderer'
 import { formatProfileName } from '@/lib/api/profiles'
+import { BRAND_COLORS } from '@/lib/brand'
 import { formatDate } from '@/lib/utils/dates'
 import { formatHours } from '@/lib/utils/hours'
 import type { HourLog, Profile } from '@/types'
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Helvetica',
     lineHeight: 1.5,
-    color: '#0f172a',
+    color: BRAND_COLORS.ink,
   },
   header: {
     flexDirection: 'row',
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     marginBottom: 28,
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#cbd5e1',
+    borderBottomColor: BRAND_COLORS.border,
   },
   logoPlaceholder: {
     height: 56,
@@ -47,10 +48,11 @@ const styles = StyleSheet.create({
   orgName: {
     fontSize: 18,
     fontFamily: 'Helvetica-Bold',
+    color: BRAND_COLORS.blue,
   },
   orgTagline: {
     fontSize: 10,
-    color: '#475569',
+    color: BRAND_COLORS.muted,
     marginTop: 4,
   },
   salutation: {
@@ -71,18 +73,18 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#cbd5e1',
+    borderColor: BRAND_COLORS.border,
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#f1f5f9',
+    backgroundColor: BRAND_COLORS.blueLight,
     borderBottomWidth: 1,
-    borderBottomColor: '#cbd5e1',
+    borderBottomColor: BRAND_COLORS.border,
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: BRAND_COLORS.border,
   },
   tableRowLast: {
     flexDirection: 'row',
@@ -119,14 +121,14 @@ const styles = StyleSheet.create({
   signatureLine: {
     width: 220,
     borderBottomWidth: 1,
-    borderBottomColor: '#0f172a',
+    borderBottomColor: BRAND_COLORS.ink,
     marginBottom: 8,
     marginTop: 36,
   },
   footer: {
     marginTop: 24,
     fontSize: 9,
-    color: '#64748b',
+    color: BRAND_COLORS.muted,
   },
 })
 

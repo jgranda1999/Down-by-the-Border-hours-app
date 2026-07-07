@@ -27,7 +27,7 @@ function LogHoursPage() {
         }
       />
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-brand-border bg-white p-6 shadow-sm">
         <HourLogForm
           submitLabel="Submit hours"
           onCancel={() => navigate('/dashboard')}

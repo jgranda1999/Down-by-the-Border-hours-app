@@ -49,13 +49,13 @@ function AdminDashboardPage() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-600">Total volunteers</p>
-          <p className="mt-2 text-3xl font-semibold text-slate-900">{stats.volunteerCount}</p>
+        <section className="rounded-xl border border-brand-border border-l-4 border-l-brand-blue bg-white p-6 shadow-sm">
+          <p className="text-sm text-brand-muted">Total volunteers</p>
+          <p className="mt-2 text-3xl font-semibold text-brand-blue">{stats.volunteerCount}</p>
         </section>
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-600">Hours this month</p>
-          <p className="mt-2 text-3xl font-semibold text-slate-900">
+        <section className="rounded-xl border border-brand-border border-l-4 border-l-brand-blue bg-white p-6 shadow-sm">
+          <p className="text-sm text-brand-muted">Hours this month</p>
+          <p className="mt-2 text-3xl font-semibold text-brand-blue">
             {formatHours(stats.hoursThisMonth)}
           </p>
         </section>
@@ -63,7 +63,7 @@ function AdminDashboardPage() {
 
       <section className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">Recent activity</h2>
+          <h2 className="text-lg font-semibold text-brand-blue">Recent activity</h2>
           <Link to="/admin/logs">
             <Button variant="secondary">View all logs</Button>
           </Link>
@@ -75,16 +75,16 @@ function AdminDashboardPage() {
             description="Hour logs will show up here when volunteers start logging."
           />
         ) : (
-          <ul className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
+          <ul className="divide-y divide-brand-border rounded-xl border border-brand-border bg-white shadow-sm">
             {stats.recentLogs.map((log) => (
               <li key={log.id} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
                 <div>
-                  <p className="font-medium text-slate-900">{log.event_name}</p>
-                  <p className="text-sm text-slate-600">
+                  <p className="font-medium text-brand-ink">{log.event_name}</p>
+                  <p className="text-sm text-brand-muted">
                     {formatProfileName(log.volunteer)} · {formatDate(log.event_date)}
                   </p>
                 </div>
-                <p className="text-sm font-medium text-slate-900">
+                <p className="text-sm font-medium text-brand-ink">
                   {formatHours(Number(log.hours))} hrs
                 </p>
               </li>

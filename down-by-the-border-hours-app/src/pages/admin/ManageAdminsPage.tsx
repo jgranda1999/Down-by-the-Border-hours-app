@@ -120,7 +120,7 @@ function ManageAdminsPage() {
     return (
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Manage admins</h1>
+          <h1 className="text-2xl font-semibold text-brand-blue">Manage admins</h1>
         </div>
         <TableSkeleton columns={4} rows={3} />
       </div>
@@ -140,8 +140,8 @@ function ManageAdminsPage() {
 
       <section className="space-y-4">
         <div>
-          <h2 className="text-lg font-medium text-slate-900">Current admins</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <h2 className="text-lg font-medium text-brand-blue">Current admins</h2>
+          <p className="mt-1 text-sm text-brand-muted">
             {admins.length === 1
               ? '1 admin account'
               : `${admins.length} admin accounts`}
@@ -154,37 +154,37 @@ function ManageAdminsPage() {
             description="Promote a volunteer below to give them admin access."
           />
         ) : (
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-brand-border bg-white shadow-sm">
             <div className="overflow-x-auto">
               <table className="min-w-full text-left text-sm">
-                <thead className="border-b border-slate-200 bg-slate-50">
+                <thead className="border-b border-brand-border bg-brand-blue-light">
                   <tr>
-                    <th className="px-4 py-3 font-medium text-slate-700">Name</th>
-                    <th className="px-4 py-3 font-medium text-slate-700">Email</th>
-                    <th className="px-4 py-3 font-medium text-slate-700">Role</th>
-                    <th className="px-4 py-3 font-medium text-slate-700">
+                    <th className="px-4 py-3 font-medium text-brand-blue">Name</th>
+                    <th className="px-4 py-3 font-medium text-brand-blue">Email</th>
+                    <th className="px-4 py-3 font-medium text-brand-blue">Role</th>
+                    <th className="px-4 py-3 font-medium text-brand-blue">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-brand-border">
                   {admins.map((profile) => {
                     const isSelf = profile.id === user?.id
 
                     return (
                       <tr key={profile.id}>
-                        <td className="px-4 py-3 font-medium text-slate-900">
+                        <td className="px-4 py-3 font-medium text-brand-ink">
                           {formatProfileName(profile)}
                           {isSelf ? (
-                            <span className="ml-2 text-xs text-slate-500">
+                            <span className="ml-2 text-xs text-brand-subtle">
                               (you)
                             </span>
                           ) : null}
                         </td>
-                        <td className="px-4 py-3 text-slate-600">
+                        <td className="px-4 py-3 text-brand-muted">
                           {profile.email}
                         </td>
-                        <td className="px-4 py-3 text-slate-900">
+                        <td className="px-4 py-3 text-brand-ink">
                           {ADMIN_ROLE_LABEL}
                         </td>
                         <td className="px-4 py-3">
@@ -209,15 +209,15 @@ function ManageAdminsPage() {
 
       <section className="space-y-4">
         <div>
-          <h2 className="text-lg font-medium text-slate-900">
+          <h2 className="text-lg font-medium text-brand-blue">
             Promote a volunteer
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-brand-muted">
             Search by name or email to find someone to make an admin.
           </p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div className="rounded-xl border border-brand-border bg-white p-4 shadow-sm sm:p-6">
           <form
             className="flex flex-col gap-4 sm:flex-row sm:items-end"
             onSubmit={(event) => {
@@ -256,31 +256,31 @@ function ManageAdminsPage() {
         ) : null}
 
         {!isSearching && volunteerResults.length > 0 ? (
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-brand-border bg-white shadow-sm">
             <div className="overflow-x-auto">
               <table className="min-w-full text-left text-sm">
-                <thead className="border-b border-slate-200 bg-slate-50">
+                <thead className="border-b border-brand-border bg-brand-blue-light">
                   <tr>
-                    <th className="px-4 py-3 font-medium text-slate-700">Name</th>
-                    <th className="px-4 py-3 font-medium text-slate-700">Email</th>
-                    <th className="px-4 py-3 font-medium text-slate-700">
+                    <th className="px-4 py-3 font-medium text-brand-blue">Name</th>
+                    <th className="px-4 py-3 font-medium text-brand-blue">Email</th>
+                    <th className="px-4 py-3 font-medium text-brand-blue">
                       School
                     </th>
-                    <th className="px-4 py-3 font-medium text-slate-700">
+                    <th className="px-4 py-3 font-medium text-brand-blue">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200">
+                <tbody className="divide-y divide-brand-border">
                   {volunteerResults.map((profile) => (
                     <tr key={profile.id}>
-                      <td className="px-4 py-3 font-medium text-slate-900">
+                      <td className="px-4 py-3 font-medium text-brand-ink">
                         {formatProfileName(profile)}
                       </td>
-                      <td className="px-4 py-3 text-slate-600">
+                      <td className="px-4 py-3 text-brand-muted">
                         {profile.email}
                       </td>
-                      <td className="px-4 py-3 text-slate-600">
+                      <td className="px-4 py-3 text-brand-muted">
                         {profile.school ?? '—'}
                       </td>
                       <td className="px-4 py-3">

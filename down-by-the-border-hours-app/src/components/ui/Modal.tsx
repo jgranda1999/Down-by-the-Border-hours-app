@@ -37,19 +37,19 @@ function Modal({
       role="presentation"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-slate-900/50" aria-hidden="true" />
+      <div className="absolute inset-0 bg-brand-ink/50" aria-hidden="true" />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className="relative w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-lg"
+        className="relative w-full max-w-md rounded-xl border border-brand-border bg-white p-6 shadow-lg"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 id="modal-title" className="text-xl font-semibold text-slate-900">
+        <h2 id="modal-title" className="text-xl font-semibold text-brand-ink">
           {title}
         </h2>
-        <div className="mt-3 text-sm text-slate-600">{children}</div>
+        <div className="mt-3 text-sm text-brand-muted">{children}</div>
         <div className="mt-6">
           <Button className="w-full" onClick={onClose}>
             {closeLabel}

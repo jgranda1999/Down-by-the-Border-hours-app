@@ -94,10 +94,10 @@ function AllLogsPage() {
         description="View and manage volunteer hours across every school and event."
       />
 
-      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <section className="rounded-xl border border-brand-border bg-white p-4 shadow-sm sm:p-6">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-1">
-            <label htmlFor="volunteer-filter" className="block text-sm font-medium text-slate-700">
+            <label htmlFor="volunteer-filter" className="block text-sm font-medium text-brand-blue">
               Volunteer
             </label>
             <select
@@ -167,41 +167,41 @@ function AllLogsPage() {
       ) : null}
 
       {!isLoading && logs.length > 0 ? (
-        <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-xl border border-brand-border bg-white shadow-sm">
           <div className="overflow-x-auto">
             <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-slate-200 bg-slate-50">
+              <thead className="border-b border-brand-border bg-brand-blue-light">
                 <tr>
-                  <th className="px-4 py-3 font-medium text-slate-700">Date</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Volunteer</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">School</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Event</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Time</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Hours</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Actions</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Date</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Volunteer</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">School</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Event</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Time</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Hours</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-brand-border">
                 {logs.map((log) => (
                   <tr key={log.id}>
-                    <td className="px-4 py-3 text-slate-900">{formatDate(log.event_date)}</td>
-                    <td className="px-4 py-3 text-slate-900">
+                    <td className="px-4 py-3 text-brand-ink">{formatDate(log.event_date)}</td>
+                    <td className="px-4 py-3 text-brand-ink">
                       <Link
                         to={`/admin/volunteers/${log.volunteer_id}`}
-                        className="underline"
+                        className="font-medium text-brand-blue underline hover:text-brand-blue-dark"
                       >
                         {formatProfileName(log.volunteer)}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 text-brand-muted">
                       {log.volunteer.school ?? '—'}
                     </td>
-                    <td className="px-4 py-3 text-slate-900">{log.event_name}</td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 text-brand-ink">{log.event_name}</td>
+                    <td className="px-4 py-3 text-brand-muted">
                       {formatTime(log.sign_in_time)} –{' '}
                       {log.sign_out_time ? formatTime(log.sign_out_time) : '—'}
                     </td>
-                    <td className="px-4 py-3 font-medium text-slate-900">
+                    <td className="px-4 py-3 font-medium text-brand-ink">
                       {formatHours(Number(log.hours))}
                     </td>
                     <td className="px-4 py-3">

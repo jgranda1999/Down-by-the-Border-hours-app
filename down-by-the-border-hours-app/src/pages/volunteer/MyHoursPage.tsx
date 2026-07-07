@@ -68,8 +68,8 @@ function MyHoursPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">My hours</h1>
-          <p className="mt-1 text-sm text-slate-600">Loading your history…</p>
+          <h1 className="text-2xl font-semibold text-brand-blue">My hours</h1>
+          <p className="mt-1 text-sm text-brand-muted">Loading your history…</p>
         </div>
         <TableSkeleton columns={5} />
       </div>
@@ -105,12 +105,12 @@ function MyHoursPage() {
           }
         />
       ) : sortedLogs.length > 0 ? (
-        <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-xl border border-brand-border bg-white shadow-sm">
           <div className="overflow-x-auto">
             <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-slate-200 bg-slate-50">
+              <thead className="border-b border-brand-border bg-brand-blue-light">
                 <tr>
-                  <th className="px-4 py-3 font-medium text-slate-700">
+                  <th className="px-4 py-3 font-medium text-brand-blue">
                     <button
                       type="button"
                       className="inline-flex items-center gap-1"
@@ -121,29 +121,29 @@ function MyHoursPage() {
                       }
                     >
                       Date
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-brand-subtle">
                         {sortDirection === 'desc' ? '↓' : '↑'}
                       </span>
                     </button>
                   </th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Event</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Time</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Hours</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Actions</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Event</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Time</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Hours</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-brand-border">
                 {sortedLogs.map((log) => {
                   const editable = canEditLog(log)
 
                   return (
                     <tr key={log.id}>
-                      <td className="px-4 py-3 text-slate-900">{formatDate(log.event_date)}</td>
-                      <td className="px-4 py-3 text-slate-900">{log.event_name}</td>
-                      <td className="px-4 py-3 text-slate-600">
+                      <td className="px-4 py-3 text-brand-ink">{formatDate(log.event_date)}</td>
+                      <td className="px-4 py-3 text-brand-ink">{log.event_name}</td>
+                      <td className="px-4 py-3 text-brand-muted">
                         {formatTime(log.sign_in_time)} – {log.sign_out_time ? formatTime(log.sign_out_time) : '—'}
                       </td>
-                      <td className="px-4 py-3 font-medium text-slate-900">
+                      <td className="px-4 py-3 font-medium text-brand-ink">
                         {formatHours(Number(log.hours))}
                       </td>
                       <td className="px-4 py-3">
@@ -161,7 +161,7 @@ function MyHoursPage() {
                             </Button>
                           </div>
                         ) : (
-                          <span className="text-xs text-slate-500">Locked</span>
+                          <span className="text-xs text-brand-subtle">Locked</span>
                         )}
                       </td>
                     </tr>

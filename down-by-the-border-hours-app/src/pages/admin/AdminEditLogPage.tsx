@@ -43,7 +43,7 @@ function AdminEditLogPage() {
     return (
       <div className="space-y-6">
         <Skeleton className="h-8 w-40" />
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="rounded-xl border border-brand-border bg-white p-6 shadow-sm">
           <div className="space-y-4">
             <Skeleton className="h-11 w-full" />
             <Skeleton className="h-11 w-full" />
@@ -69,8 +69,8 @@ function AdminEditLogPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Edit log</h1>
-          <p className="mt-1 text-sm text-slate-600">
+          <h1 className="text-2xl font-semibold text-brand-blue">Edit log</h1>
+          <p className="mt-1 text-sm text-brand-muted">
             Editing hours for {formatProfileName(volunteer)}
           </p>
         </div>
@@ -79,7 +79,7 @@ function AdminEditLogPage() {
         </Link>
       </div>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-brand-border bg-white p-6 shadow-sm">
         <HourLogForm
           submitLabel="Save changes"
           defaultValues={{

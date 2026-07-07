@@ -50,12 +50,12 @@ function VolunteerDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="text-xl font-semibold text-slate-900 sm:text-2xl">
+      <section className="rounded-xl border border-brand-border border-l-4 border-l-brand-blue bg-white p-6 shadow-sm">
+        <h1 className="text-xl font-semibold text-brand-blue sm:text-2xl">
           Hey, {profile?.first_name || 'volunteer'}!
         </h1>
-        <p className="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl">
-          {formatHours(totalHours)} <span className="text-lg font-normal text-slate-600">total hours</span>
+        <p className="mt-2 text-2xl font-semibold text-brand-blue sm:text-3xl">
+          {formatHours(totalHours)} <span className="text-lg font-normal text-brand-muted">total hours</span>
         </p>
         <div className="mt-6">
           <Link to="/hours/log">
@@ -66,9 +66,9 @@ function VolunteerDashboardPage() {
 
       <section className="space-y-4">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">Recent activity</h2>
+          <h2 className="text-lg font-semibold text-brand-blue">Recent activity</h2>
           {logs.length > 0 ? (
-            <Link to="/hours" className="text-sm font-medium text-slate-700 underline">
+            <Link to="/hours" className="text-sm font-medium text-brand-blue underline">
               View all
             </Link>
           ) : null}
@@ -85,14 +85,14 @@ function VolunteerDashboardPage() {
             }
           />
         ) : (
-          <ul className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white shadow-sm">
+          <ul className="divide-y divide-brand-border rounded-xl border border-brand-border bg-white shadow-sm">
             {recentLogs.map((log) => (
               <li key={log.id} className="flex items-center justify-between gap-4 px-4 py-3">
                 <div>
-                  <p className="font-medium text-slate-900">{log.event_name}</p>
-                  <p className="text-sm text-slate-600">{formatDate(log.event_date)}</p>
+                  <p className="font-medium text-brand-ink">{log.event_name}</p>
+                  <p className="text-sm text-brand-muted">{formatDate(log.event_date)}</p>
                 </div>
-                <p className="text-sm font-medium text-slate-900">
+                <p className="text-sm font-medium text-brand-ink">
                   {formatHours(Number(log.hours))} hrs
                 </p>
               </li>

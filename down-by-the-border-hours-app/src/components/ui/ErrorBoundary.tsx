@@ -27,12 +27,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-          <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-            <h1 className="text-xl font-semibold text-slate-900">
+        <div className="flex min-h-screen items-center justify-center bg-brand-surface px-4">
+          <div className="w-full max-w-md rounded-xl border border-brand-border bg-white p-8 text-center shadow-sm">
+            <h1 className="text-xl font-semibold text-brand-ink">
               Something went wrong
             </h1>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-brand-muted">
               The app hit an unexpected error. Refresh the page and try again.
             </p>
             <div className="mt-6">

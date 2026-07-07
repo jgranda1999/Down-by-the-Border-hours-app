@@ -11,7 +11,7 @@ function BrandLogo({
   className = '',
   imageClassName = 'h-10 w-auto',
   showName = true,
-  nameClassName = 'text-lg font-semibold text-slate-900',
+  nameClassName = 'text-lg font-semibold text-brand-blue',
 }: BrandLogoProps) {
   return (
     <span className={`inline-flex items-center gap-3 ${className}`}>

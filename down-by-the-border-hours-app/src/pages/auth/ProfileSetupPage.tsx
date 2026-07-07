@@ -86,7 +86,7 @@ function ProfileSetupPage() {
         />
 
         <div className="space-y-1">
-          <label htmlFor="school" className="block text-sm font-medium text-slate-700">
+          <label htmlFor="school" className="block text-sm font-medium text-brand-blue">
             School
           </label>
           <input
@@ -101,7 +101,7 @@ function ProfileSetupPage() {
               <option key={school} value={school} />
             ))}
           </datalist>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-brand-subtle">
             Staff and admins can choose &ldquo;Not applicable&rdquo;.
           </p>
           {errors.school ? (
@@ -111,8 +111,8 @@ function ProfileSetupPage() {
 
         {isAdmin ? (
           <div className="space-y-1">
-            <p className="text-sm font-medium text-slate-700">Role</p>
-            <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
+            <p className="text-sm font-medium text-brand-blue">Role</p>
+            <p className="rounded-lg border border-brand-border bg-brand-surface px-3 py-2 text-sm text-brand-ink">
               {ADMIN_ROLE_LABEL}
             </p>
           </div>

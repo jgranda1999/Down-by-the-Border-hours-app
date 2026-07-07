@@ -44,7 +44,7 @@ function VolunteersPage() {
         description="Search students and view their full volunteer history."
       />
 
-      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <section className="rounded-xl border border-brand-border bg-white p-4 shadow-sm sm:p-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <Input
             label="Search"
@@ -77,25 +77,25 @@ function VolunteersPage() {
       ) : null}
 
       {!isLoading && volunteers.length > 0 ? (
-        <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-xl border border-brand-border bg-white shadow-sm">
           <div className="overflow-x-auto">
             <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-slate-200 bg-slate-50">
+              <thead className="border-b border-brand-border bg-brand-blue-light">
                 <tr>
-                  <th className="px-4 py-3 font-medium text-slate-700">Name</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Email</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">School</th>
-                  <th className="px-4 py-3 font-medium text-slate-700">Actions</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Name</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Email</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">School</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-brand-border">
                 {volunteers.map((volunteer) => (
                   <tr key={volunteer.id}>
-                    <td className="px-4 py-3 font-medium text-slate-900">
+                    <td className="px-4 py-3 font-medium text-brand-ink">
                       {formatProfileName(volunteer)}
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{volunteer.email}</td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 text-brand-muted">{volunteer.email}</td>
+                    <td className="px-4 py-3 text-brand-muted">
                       {volunteer.school ?? '—'}
                     </td>
                     <td className="px-4 py-3">

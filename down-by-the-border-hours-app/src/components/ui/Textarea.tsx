@@ -11,7 +11,7 @@ function Textarea({ label, error, id, className = '', ...props }: TextareaProps)
 
   return (
     <div className="space-y-1">
-      <label htmlFor={textareaId} className="block text-sm font-medium text-slate-700">
+      <label htmlFor={textareaId} className="block text-sm font-medium text-brand-blue">
         {label}
       </label>
       <textarea

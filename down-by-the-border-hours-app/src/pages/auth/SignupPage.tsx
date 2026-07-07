@@ -71,7 +71,7 @@ function SignupPage() {
         footer={
           <>
             Already have an account?{' '}
-            <Link to="/login" className="font-medium text-slate-900 underline">
+            <Link to="/login" className="font-medium text-brand-blue underline hover:text-brand-blue-dark">
               Sign in
             </Link>
           </>
@@ -121,7 +121,7 @@ function SignupPage() {
       >
         <p>
           We sent a confirmation link to{' '}
-          <strong className="text-slate-900">{confirmationEmail}</strong>.
+          <strong className="text-brand-ink">{confirmationEmail}</strong>.
         </p>
         <p className="mt-3">
           Open that email and click the link to finish signing up. Once you&apos;re
