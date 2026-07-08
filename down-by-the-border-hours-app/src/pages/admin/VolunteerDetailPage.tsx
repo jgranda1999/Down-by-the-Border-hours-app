@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ServiceHourLetterPanel from '@/components/admin/ServiceHourLetterPanel'
+import VerificationPhotoView from '@/components/hour-logs/VerificationPhotoView'
 import Button from '@/components/ui/Button'
 import ErrorState from '@/components/ui/ErrorState'
 import PageHeader from '@/components/ui/PageHeader'
@@ -132,6 +133,7 @@ function VolunteerDetailPage() {
                     <th className="px-4 py-3 font-medium text-brand-blue">Event</th>
                     <th className="px-4 py-3 font-medium text-brand-blue">Time</th>
                     <th className="px-4 py-3 font-medium text-brand-blue">Hours</th>
+                    <th className="px-4 py-3 font-medium text-brand-blue">Photo</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-brand-border">
@@ -145,6 +147,9 @@ function VolunteerDetailPage() {
                       </td>
                       <td className="px-4 py-3 font-medium text-brand-ink">
                         {formatHours(Number(log.hours))}
+                      </td>
+                      <td className="px-4 py-3">
+                        <VerificationPhotoView photoPath={log.verification_photo_path} compact />
                       </td>
                     </tr>
                   ))}

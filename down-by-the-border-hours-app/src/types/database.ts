@@ -19,6 +19,7 @@ export interface Database {
           sign_out_time: string | null
           hours: number
           notes: string | null
+          verification_photo_path: string | null
           created_at: string
           updated_at: string
         }
@@ -31,6 +32,7 @@ export interface Database {
           sign_out_time?: string | null
           hours: number
           notes?: string | null
+          verification_photo_path?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -43,6 +45,7 @@ export interface Database {
           sign_out_time?: string | null
           hours?: number
           notes?: string | null
+          verification_photo_path?: string | null
           created_at?: string
           updated_at?: string
         }

@@ -5,6 +5,7 @@ import Button from '@/components/ui/Button'
 import ErrorState from '@/components/ui/ErrorState'
 import Skeleton from '@/components/ui/Skeleton'
 import { useAuth } from '@/hooks/useAuth'
+import { uploadHourLogPhoto } from '@/lib/api/hourLogPhotos'
 import { getHourLog, updateHourLog } from '@/lib/api/hourLogs'
 import { appToast } from '@/lib/toast'
 import { getErrorMessage } from '@/lib/utils/errors'
@@ -72,6 +73,8 @@ function EditLogPage() {
     )
   }
 
+  const needsPhoto = !log.verification_photo_path
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -89,6 +92,8 @@ function EditLogPage() {
       <section className="rounded-xl border border-brand-border bg-white p-6 shadow-sm">
         <HourLogForm
           submitLabel="Save changes"
+          requireVerificationPhoto={needsPhoto}
+          existingVerificationPhotoPath={log.verification_photo_path}
           defaultValues={{
             eventName: log.event_name,
             eventDate: log.event_date,
@@ -101,6 +106,20 @@ function EditLogPage() {
           onCancel={() => navigate('/hours')}
           onSubmit={async (values) => {
             try {
+              let verificationPhotoPath = log.verification_photo_path
+
+              if (values.verificationPhoto) {
+                verificationPhotoPath = await uploadHourLogPhoto(
+                  user!.id,
+                  log.id,
+                  values.verificationPhoto,
+                )
+              }
+
+              if (!verificationPhotoPath) {
+                throw new Error('Take a verification selfie before submitting.')
+              }
+
               await updateHourLog(log.id, {
                 event_name: values.eventName,
                 event_date: values.eventDate,
@@ -108,6 +127,7 @@ function EditLogPage() {
                 sign_out_time: values.signOutIso,
                 hours: values.hours,
                 notes: values.notes?.trim() || null,
+                verification_photo_path: verificationPhotoPath,
               })
               appToast.success('Hours updated.')
               navigate('/hours', { replace: true })

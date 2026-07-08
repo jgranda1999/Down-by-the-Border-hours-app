@@ -31,6 +31,7 @@ create table public.hour_logs (
   sign_out_time timestamptz,
   hours numeric(5,2) not null check (hours > 0 and hours <= 24),
   notes text,
+  verification_photo_path text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import VerificationPhotoView from '@/components/hour-logs/VerificationPhotoView'
 import Button from '@/components/ui/Button'
 import EmptyState from '@/components/ui/EmptyState'
 import ErrorState from '@/components/ui/ErrorState'
@@ -178,6 +179,7 @@ function AllLogsPage() {
                   <th className="px-4 py-3 font-medium text-brand-blue">Event</th>
                   <th className="px-4 py-3 font-medium text-brand-blue">Time</th>
                   <th className="px-4 py-3 font-medium text-brand-blue">Hours</th>
+                  <th className="px-4 py-3 font-medium text-brand-blue">Photo</th>
                   <th className="px-4 py-3 font-medium text-brand-blue">Actions</th>
                 </tr>
               </thead>
@@ -203,6 +205,12 @@ function AllLogsPage() {
                     </td>
                     <td className="px-4 py-3 font-medium text-brand-ink">
                       {formatHours(Number(log.hours))}
+                    </td>
+                    <td className="px-4 py-3">
+                      <VerificationPhotoView
+                        photoPath={log.verification_photo_path}
+                        compact
+                      />
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-2">

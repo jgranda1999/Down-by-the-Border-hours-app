@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import VerificationPhotoView from '@/components/hour-logs/VerificationPhotoView'
 import HourLogForm from '@/components/forms/HourLogForm'
 import Button from '@/components/ui/Button'
 import ErrorState from '@/components/ui/ErrorState'
@@ -80,6 +81,12 @@ function AdminEditLogPage() {
       </div>
 
       <section className="rounded-xl border border-brand-border bg-white p-6 shadow-sm">
+        <VerificationPhotoView
+          photoPath={log.verification_photo_path}
+          label="Volunteer verification selfie"
+          className="mb-6"
+        />
+
         <HourLogForm
           submitLabel="Save changes"
           defaultValues={{

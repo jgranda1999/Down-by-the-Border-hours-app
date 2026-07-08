@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { deleteHourLogPhoto } from '@/lib/api/hourLogPhotos'
 import type { HourLog, HourLogInsert, HourLogUpdate, HourLogWithVolunteer } from '@/types'
 
 export interface ListHourLogsOptions {
@@ -110,9 +111,18 @@ export async function updateHourLog(
 }
 
 export async function deleteHourLog(logId: string): Promise<void> {
-  const { error } = await supabase.from('hour_logs').delete().eq('id', logId)
+  const log = await getHourLog(logId)
 
+  const { error } = await supabase.from('hour_logs').delete().eq('id', logId)
   if (error) throw error
+
+  if (log.verification_photo_path) {
+    try {
+      await deleteHourLogPhoto(log.verification_photo_path)
+    } catch {
+      // Log row is already deleted; orphaned storage files are acceptable.
+    }
+  }
 }
 
 export function sumHours(logs: Pick<HourLog, 'hours'>[]): number {
